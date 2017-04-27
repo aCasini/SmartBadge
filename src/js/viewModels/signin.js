@@ -41,11 +41,14 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'appController',
       let passWord = $('#MobilePTPassword').val();
 
       alert("Start the login to AWS Cognito");
-      alert("UserName: "+ userName);
-      alert("Password: "+ passWord);
+
       //app.callAwsCognito();
-      alert(app.awsCognitoClient);
-      app.awsCognitoClient.registerForNotifications();
+      var credentials = {
+        'userName': userName,
+        'passWord': passWord
+      }
+      //app.pushClient.registerForNotifications();
+      app.pushClient.signInSmartBadge(credentials);
       //oj.Router.rootInstance.go('incidents/tabdashboard');
     };
 

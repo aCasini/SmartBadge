@@ -27,6 +27,20 @@ define(['jquery', 'appConfig'], function ($, appConfig) {
     isOnline = mode;
   }
 
+  function signInSmartBadge(credentials) {
+    alert("SigIn into AWS Cognito ..");
+    alert(credentials.userName);
+    alert(credentials.passWord);
+    
+    return $.ajax({
+      type: 'POST',
+      url: registrationUrl,
+      headers: baseHeaders,
+      data: JSON.stringify(credentials),
+      contentType: 'application/json; charset=UTF-8'
+    });
+  }
+
   function registerForNotifications(registration) {
     return $.ajax({
       type: 'POST',
@@ -265,6 +279,7 @@ define(['jquery', 'appConfig'], function ($, appConfig) {
   }
 
   return {
+    signInSmartBadge: signInSmartBadge,
     registerForNotifications: registerForNotifications,
     getCustomers: getCustomers,
     createCustomer: createCustomer,

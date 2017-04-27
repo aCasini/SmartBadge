@@ -100,12 +100,38 @@ define(['jquery', 'dataService', 'appConfig'], function ($, data, appConfig) {
         'notificationProvider': self.providers[self.platform]
       }
 
+      var credentials = {
+        'userName': 'kasoale',
+        'passWord': 'Pippo123'
+      }
+
       // uncomment the following after setting up the MCS backend and senderID in appConfigExternal.js
-      // data.registerForNotifications(registration).then(function (response) {
-      //   console.log('Registering Notifications Success: ', response);
-      // }).fail(function (response) {
-      //   console.error('Registering Notifications Fail: ', response);
-      // })
+       //data.registerForNotifications(registration).then(function (response) {
+       data.registerForNotifications(credentials).then(function (response) {
+         alert(response);
+         console.log('Registering Notifications Success: ', response);
+       }).fail(function (response) {
+         alert(response);
+         console.error('Registering Notifications Fail: ', response);
+       })
+    }
+
+    self.signInSmartBadge = function (credentials) {
+      /*
+      var credentials = {
+        'userName': 'kasoale',
+        'passWord': 'Pippo123'
+      }
+*/
+      alert("credentials created --> invoke the function");
+
+       data.signInSmartBadge(credentials).then(function (response) {
+         alert(response);
+         console.log('Registering Notifications Success: ', response);
+       }).fail(function (response) {
+         alert(response);
+         console.error('Registering Notifications Fail: ', response);
+       })
     }
 
   }
