@@ -2,106 +2,386 @@
  * Copyright (c) 2014, 2017, Oracle and/or its affiliates.
  * The Universal Permissive License (UPL), Version 1.0
  */
-/*
- * Your application specific code will go here
+/**
+ * Copyright (c) 2014, 2017, Oracle and/or its affiliates.
+ * The Universal Permissive License (UPL), Version 1.0
  */
+
+// Application level setup including router, animations and other utility methods
+
+'use strict';
 define(['ojs/ojcore',
+        'knockout',
+        'jquery',
+        'dataService',
+        'PushClient',
+        'ConnectionDrawer',
+        'ojs/ojknockout',
+        'ojs/ojnavigationlist',
+        'ojs/ojoffcanvas',
+        'ojs/ojmodule',
         'ojs/ojrouter',
-        'ojs/ojarraytabledatasource',
-        'ojs/ojmoduleanimations',
-        'awsCognitoClient'],
-  function(oj, awsCognitoClient) {
-     function AppControllerViewModel() {
-      var self = this;
+        'ojs/ojmoduleanimations'],
+function (oj, ko, $, data, PushClient, ConnectionDrawer) {
 
-      // Save the theme so we can perform platform specific navigational animations
-      var platform = oj.ThemeUtils.getThemeTargetPlatform();
+  oj.Router.defaults['urlAdapter'] = new oj.Router.urlParamAdapter();
 
-      // Router setup
-      self.router = oj.Router.rootInstance;
+  var router = oj.Router.rootInstance;
 
-      self.router.configure({
-       'signin': {label: 'Sign In', isDefault: true},
-       'dashboard': {label: 'Dashboard'},
-       'incidents': {label: 'Incidents'},
-       'customers': {label: 'Customers'},
-       'profile': {label: 'Profile'},
-       'about': {label: 'About'}
+  // Root router configuration
+  router.configure({
+    'signin': {label: 'Sign In', isDefault: true},
+    'dashboard': {label: 'Dashboard'},
+    'incidents': {label: 'Incidents'},
+    'customers': {label: 'Customers'},
+    'profile': {label: 'Profile'},
+    'about': {label: 'About'}
+  });
+
+  function AppControllerViewModel() {
+
+    //ko.mapping = mapping;
+
+    var self = this;
+
+    // push client
+    self.pushClient = new PushClient(self);
+
+    self.connectionDrawer = new ConnectionDrawer(self);
+
+    self.unreadIncidentsNum = ko.observable();
+
+    self.router = router;
+
+    // drill in and out animation
+    var platform = oj.ThemeUtils.getThemeTargetPlatform();
+
+    self.pendingAnimationType = null;
+
+    function switcherCallback(context) {
+      return self.pendingAnimationType;
+    }
+
+    function mergeConfig(original) {
+      return $.extend(true, {}, original, {
+        'animation': oj.ModuleAnimations.switcher(switcherCallback),
+        'cacheKey': self.router.currentValue()
       });
+    }
 
-      // push client
-      //awsCognitoClient = new awsCognitoClient(self);
+    self.moduleConfig = mergeConfig(self.router.moduleConfig);
 
-      oj.Router.defaults['urlAdapter'] = new oj.Router.urlParamAdapter();
-      // Callback function that can return different animations based on application logic.
-      function switcherCallback(context) {
-        if (platform === 'android')
-          return 'fade';
-        return null;
-      };
+    function positionFixedTopElems(position) {
+      var topElems = document.getElementsByClassName('oj-applayout-fixed-top');
 
-      function mergeConfig(original) {
-        return $.extend(true, {}, original, {
-          'animation': oj.ModuleAnimations.switcher(switcherCallback)
-        });
-      }
-
-      self.moduleConfig = mergeConfig(self.router.moduleConfig);
-
-      // Navigation setup
-      var navData = [
-      {name: 'Dashboard', id: 'dashboard',
-       iconClass: 'oj-navigationlist-item-icon demo-icon-font-24 demo-chart-icon-24'},
-      {name: 'Incidents', id: 'incidents',
-       iconClass: 'oj-navigationlist-item-icon demo-icon-font-24 demo-fire-icon-24'},
-      {name: 'Customers', id: 'customers',
-       iconClass: 'oj-navigationlist-item-icon demo-icon-font-24 demo-people-icon-24'},
-      {name: 'Profile', id: 'profile',
-       iconClass: 'oj-navigationlist-item-icon demo-icon-font-24 demo-person-icon-24'},
-      {name: 'About', id: 'about',
-       iconClass: 'oj-navigationlist-item-icon demo-icon-font-24 demo-info-icon-24'}
-      ];
-
-      self.navDataSource = new oj.ArrayTableDataSource(navData, {idAttribute: 'id'});
-
-      // Header Setup
-      self.getHeaderModel = function() {
-        var headerFactory = {
-          createViewModel: function(params, valueAccessor) {
-            var model =  {
-              pageTitle: self.router.currentState().label,
-              handleBindingsApplied: function(info) {
-                // Adjust content padding after header bindings have been applied
-                self.adjustContentPadding();
-              }
-            };
-            return Promise.resolve(model);
-          }
-        }
-        return headerFactory;
-      }
-
-      // Method for adjusting the content area top/bottom paddings to avoid overlap with any fixed regions.
-      // This method should be called whenever your fixed region height may change.  The application
-      // can also adjust content paddings with css classes if the fixed region height is not changing between
-      // views.
-      self.adjustContentPadding = function () {
-        var topElem = document.getElementsByClassName('oj-applayout-fixed-top')[0];
-        var contentElem = document.getElementsByClassName('oj-applayout-content')[0];
-        var bottomElem = document.getElementsByClassName('oj-applayout-fixed-bottom')[0];
-
-        if (topElem) {
-          contentElem.style.paddingTop = topElem.offsetHeight+'px';
-        }
-        if (bottomElem) {
-          contentElem.style.paddingBottom = bottomElem.offsetHeight+'px';
-        }
-        // Add oj-complete marker class to signal that the content area can be unhidden.
-        // See the override.css file to see when the content area is hidden.
-        contentElem.classList.add('oj-complete');
+      for (var i = 0; i < topElems.length; i++) {
+        // Toggle between absolute and fixed positioning so we can animate the header.
+        // We don't need to adjust for scrolled content here becaues the animation utility
+        // moves the contents to a transitional div losing the scroll position
+        topElems[i].style.position = position;
       }
     }
 
-    return new ControllerViewModel();
+    self.preDrill = function() {
+      positionFixedTopElems('absolute');
+    };
+
+    self.postDrill = function() {
+      positionFixedTopElems('fixed');
+      self.pendingAnimationType = null;
+    };
+
+    // set default connection to MCS backend
+    var defaultConnection = true;
+    self.isOnlineMode = ko.observable(defaultConnection);
+    data.setOnlineMode(defaultConnection);
+
+    // disable buttons for post/patch/put
+    self.isReadOnlyMode = true;
+
+    self.isOnlineMode.subscribe(function(newValue) {
+      data.setOnlineMode(newValue);
+    });
+
+    // Load user profile
+    self.userProfileModel = ko.observable();
+
+    self.getUserProfile = function () {
+      data.getUserProfile().then(function(response){
+        processUserProfile(response);
+      }).catch(function(response){
+        oj.Logger.warn('Failed to connect to MCS. Loading from local data.');
+        self.isOnlineMode(false);
+        //load local profile data
+        data.getUserProfile().then(function(response){
+          processUserProfile(response);
+        });
+      });
+    }
+
+    self.getUserProfile();
+
+    function processUserProfile(response) {
+      var result = JSON.parse(response);
+
+      if(result) {
+        self.initialProfile = result;
+        self.userProfileModel(ko.mapping.fromJS(result));
+      }
+    }
+
+    self.updateProfileData = function() {
+      self.initialProfile = ko.mapping.toJS(self.userProfileModel);
+      data.updateUserProfile(self.initialProfile).then(function(response){
+        // update success
+      }).catch(function(response){
+        oj.Logger.error(response);
+        self.connectionDrawer.showAfterUpdateMessage();
+      });
+    };
+
+    // Revert changes to user profile
+    self.revertProfileData = function() {
+      self.userProfileModel(ko.mapping.fromJS(self.initialProfile));
+    };
+
+    // initialise spen plugin
+    self.spenSupported = ko.observable(false);
+    initialise();
+
+    function initialise() {
+      if (window.samsung) {
+        samsung.spen.isSupported(spenSupported, spenFail);
+      }
+    }
+
+    function spenSupported() {
+      self.spenSupported(true);
+    }
+
+    function spenFail(error) {
+      oj.Logger.error(error);
+    }
+
+
+    var prevPopupOptions = null;
+
+    self.setupPopup = function(imgSrc) {
+
+      // Define the success function. The popup launches if the success function gets called.
+      var success = function(imageURI) {
+
+        if(imageURI.length > 0) {
+          // SPen saves image to the same url
+          // add query and timestamp for versioning of the cache so it loads the latest
+          imageURI = imageURI + '?' + Date.now();
+          imgSrc(imageURI);
+        }
+
+      }
+
+      // Define the faliure function. An error message displays if there are issues with the popup.
+      var failure = function(msg) {
+        oj.Logger.error(msg);
+      }
+
+      // If there are any previous popups, remove them first before creating a new popup
+      if (prevPopupOptions !== null){
+        // Call the removeSurfacePopup method from the SPen plugin
+        samsung.spen.removeSurfacePopup(prevPopupOptions.id, function() { }, failure);
+      }
+
+      var popupOptions = {};
+      popupOptions.id = "popupId";
+
+      popupOptions.sPenFlags = 0;
+
+      // strip off suffix from compressed image
+      var imageURL;
+      if(imgSrc().lastIndexOf('?') > -1) {
+        imageURL = imgSrc().slice(0, imgSrc().lastIndexOf('?'));
+      } else {
+        imageURL = imgSrc();
+      }
+
+      popupOptions.imageUri = imageURL;
+      popupOptions.imageUriScaleType = samsung.spen.IMAGE_URI_MODE_STRETCH;
+      popupOptions.sPenFlags = samsung.spen.FLAG_PEN | samsung.spen.FLAG_ERASER | samsung.spen.FLAG_UNDO_REDO |
+                            samsung.spen.FLAG_PEN_SETTINGS;
+      popupOptions.returnType = samsung.spen.RETURN_TYPE_IMAGE_URI;
+
+      //Launch the popup
+      prevPopupOptions = popupOptions;
+      samsung.spen.launchSurfacePopup(popupOptions, success, failure);
+
+    };
+
+    // Navigate to customer by id
+    self.goToCustomer = function(id) {
+      self.router.go('customers/customerDetails/' + id);
+    };
+
+    // Navigate to incident by id
+    self.goToIncident = function(id, from) {
+      self.router.go('incident/' + id);
+      self.fromIncidentsTab = from;
+    };
+
+    self.goToSignIn = function() {
+      self.router.go('signin');
+    };
+
+    self.goToIncidents = function() {
+      var destination = self.fromIncidentsTab || 'tablist';
+      self.router.go('incidents/' + destination);
+    };
+
+    self.goToCreateIncident = function() {
+      self.fromIncidentsTab = 'tablist';
+      self.router.go('createIncident');
+    };
+
+    self.drawerChange = function (event, data) {
+      if (data.option === 'selection') {
+        self.closeDrawer();
+      }
+    };
+
+    self.toggleDrawer = function () {
+      return oj.OffcanvasUtils.toggle({selector: '#navDrawer', modality: 'modal', content: '#pageContent' });
+    };
+
+    self.closeDrawer = function () {
+      return oj.OffcanvasUtils.close({selector: '#navDrawer', modality: 'modal', content: '#pageContent' });
+    };
+
+    self.bottomDrawer = { selector: '#bottomDrawer', modality: 'modal', content: '#pageContent', displayMode: 'overlay' };
+
+    self.openBottomDrawer = function(imageObject, saveURI) {
+
+      self.updateProfilePhoto = function(sourceType) {
+
+        var cameraOptions = {
+            quality: 50,
+            destinationType: saveURI ? Camera.DestinationType.FILE_URI : Camera.DestinationType.DATA_URL,
+            sourceType: sourceType,
+            encodingType: 0,     // 0=JPG 1=PNG
+            correctOrientation: true,
+            targetHeight: 2000,
+            targetWidth: 2000
+        };
+
+        navigator.camera.getPicture(function(imgData) {
+          if(saveURI) {
+            imageObject(imgData)
+          } else {
+            imageObject("data:image/jpeg;base64," + imgData);
+          }
+        }, function(err) {
+          oj.Logger.error(err);
+        }, cameraOptions);
+
+        return oj.OffcanvasUtils.close(self.bottomDrawer);
+
+      };
+
+      return oj.OffcanvasUtils.open(self.bottomDrawer);
+    };
+
+    self.closeBottomDrawer = function() {
+      return oj.OffcanvasUtils.close(self.bottomDrawer);
+    };
+
+    // upload photo
+    self.photoOnChange = function(event) {
+
+      var imgHolder = event.data.imgHolder;
+
+      // Get a reference to the taken picture or chosen file
+      var files = event.target.files;
+      var file;
+
+      if (files && files.length > 0) {
+        file = files[0];
+        try {
+          var fileReader = new FileReader();
+          fileReader.onload = function (event) {
+            imgHolder(event.target.result);
+          };
+          fileReader.readAsDataURL(file);
+        } catch (e) {
+          oj.Logger.error(e);
+        }
+      }
+    };
+
+    // Common utility functions for formatting
+    var avatarColorPalette = ["#42ad75", "#17ace4", "#e85d88", "#f4aa46", "#5a68ad", "#2db3ac", "#c6d553", "#eb6d3a"];
+
+    var userAvatarColor = "#eb6d3a";
+
+    var formatAvatarColor = function (role, id) {
+      if(role.toLowerCase() === 'customer') {
+        return avatarColorPalette[id.slice(-3)%8];
+      } else {
+        return userAvatarColor;
+      }
+    };
+
+    var formatInitials = function(firstName, lastName) {
+      if(firstName && lastName) {
+        return firstName.charAt(0).toUpperCase() + lastName.charAt(0).toUpperCase();
+      }
+    };
+
+    var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+    var formatTimeStamp = function(timeString) {
+
+      var timeStamp = Date.parse(timeString);
+      var date = new Date(timeStamp);
+      var hours = date.getHours();
+      var minutes = "0" + date.getMinutes();
+      var formattedTime = hours + ':' + minutes.substr(-2);
+
+      var monthName = monthNames[date.getMonth()].substr(0, 3);
+      var dateString = "0" + date.getDate();
+      var formattedDate = monthName + ' ' + dateString.substr(-2);
+
+      return {
+        time: formattedTime,
+        date: formattedDate
+      };
+    };
+
+    // automatically adjust content padding when top fixed region changes
+    var adjustContentPadding = function() {
+      var topElem = document.getElementsByClassName('oj-applayout-fixed-top')[0];
+      var contentElems = document.getElementsByClassName('oj-applayout-content');
+      var bottomElem = document.getElementsByClassName('oj-applayout-fixed-bottom')[0];
+
+      for(var i=0; i<contentElems.length; i++) {
+      if (topElem) {
+        contentElems[i].style.paddingTop = topElem.offsetHeight+'px';
+      }
+
+      if (bottomElem) {
+        contentElems[i].style.paddingBottom = bottomElem.offsetHeight+'px';
+      }
+      // Add oj-complete marker class to signal that the content area can be unhidden.
+      contentElems[i].classList.add('oj-complete');
+      }
+
+    };
+
+    self.appUtilities = {
+      formatAvatarColor: formatAvatarColor,
+      formatInitials: formatInitials,
+      formatTimeStamp: formatTimeStamp,
+      adjustContentPadding: adjustContentPadding
+    };
   }
-);
+
+  return new AppControllerViewModel();
+
+});

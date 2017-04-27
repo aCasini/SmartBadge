@@ -8,8 +8,8 @@
 
 define(['jquery'], function ($) {
 
-  function awsCognitoClient(app) {
-    alert("awsCognitoClient");
+  function AWSCognitoClient(app) {
+    alert("AWSCognitoClient");
     var self = this;
 
     var platforms = navigator.userAgent.match(/(iPhone|iPad|iPod|Android)/i);
@@ -36,5 +36,5 @@ define(['jquery'], function ($) {
 
   }
 
-  return awsCognitoClient;
+  return AWSCognitoClient;
 })
