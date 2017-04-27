@@ -5,9 +5,13 @@
 /*
  * Your application specific code will go here
  */
-define(['ojs/ojcore', 'ojs/ojrouter', 'ojs/ojarraytabledatasource', 'ojs/ojmoduleanimations'],
-  function(oj) {
-     function ControllerViewModel() {
+define(['ojs/ojcore',
+        'ojs/ojrouter',
+        'ojs/ojarraytabledatasource',
+        'ojs/ojmoduleanimations',
+        'awsCognitoClient'],
+  function(oj, awsCognitoClient) {
+     function AppControllerViewModel() {
       var self = this;
 
       // Save the theme so we can perform platform specific navigational animations
@@ -17,12 +21,16 @@ define(['ojs/ojcore', 'ojs/ojrouter', 'ojs/ojarraytabledatasource', 'ojs/ojmodul
       self.router = oj.Router.rootInstance;
 
       self.router.configure({
-       'dashboard': {label: 'Dashboard', isDefault: true},
+       'signin': {label: 'Sign In', isDefault: true},
+       'dashboard': {label: 'Dashboard'},
        'incidents': {label: 'Incidents'},
        'customers': {label: 'Customers'},
        'profile': {label: 'Profile'},
        'about': {label: 'About'}
       });
+
+      // push client
+      //awsCognitoClient = new awsCognitoClient(self);
 
       oj.Router.defaults['urlAdapter'] = new oj.Router.urlParamAdapter();
       // Callback function that can return different animations based on application logic.
@@ -73,9 +81,9 @@ define(['ojs/ojcore', 'ojs/ojrouter', 'ojs/ojarraytabledatasource', 'ojs/ojmodul
         return headerFactory;
       }
 
-      // Method for adjusting the content area top/bottom paddings to avoid overlap with any fixed regions. 
+      // Method for adjusting the content area top/bottom paddings to avoid overlap with any fixed regions.
       // This method should be called whenever your fixed region height may change.  The application
-      // can also adjust content paddings with css classes if the fixed region height is not changing between 
+      // can also adjust content paddings with css classes if the fixed region height is not changing between
       // views.
       self.adjustContentPadding = function () {
         var topElem = document.getElementsByClassName('oj-applayout-fixed-top')[0];

@@ -1,0 +1,38 @@
+<div class="oj-flex-item">
+  <div class="oj-hybrid-padding-start">
+    <h1 class="demo-signin-appname"><div style="font-weight: 400; padding-top: 4px;">Smart Badge</div></h1>
+  </div>
+
+  <div class="demo-signin-form-container oj-hybrid-padding">
+    <form class="demo-signin-form oj-hybrid-padding-vertical" method="post" name="signInForm">
+      <input id="MobilePTUsername"
+             placeholder="User Name"
+             autocapitalize=off
+             aria-label="User Name"
+             data-bind="ojComponent:
+                          {
+                              component: 'ojInputText',
+                              value: userName,
+                              required: true
+                            }">
+
+Today's message is: <span data-bind="text: userName"></span>
+
+
+
+      <input type="password" id="MobilePTPassword" placeholder="Password" aria-label="password" data-bind="ojComponent: {component: 'ojInputPassword', value: passWord, required: true }"/>
+
+      <div class="oj-hybrid-padding-top">
+        <button id="signInBtn" class="demo-signin-button oj-hybrid-padding-horizontal" data-bind="click: signIn, ojComponent: {component:'ojButton', label: 'Sign In', chroming: 'full'}"></button>
+        <a id="cannotSignInBtn" href="javascript:;" class="forgotLinkM">Can't sign in?</a>
+      </div>
+
+      <div id="rememberUserNameCheckBox" aria-label="Remeber User Name" data-bind="ojComponent: { component: 'ojCheckboxset', value: rememberUserName }" class='oj-checkboxset-no-chrome oj-checkboxset-input-start'>
+        <span class="oj-choice-item">
+          <input id="rememberUserName" type="checkbox" value="remember">
+          <label for="rememberUserName">Remember User Name</label>
+        </span>
+      </div>
+    </form>
+  </div>
+</div>
