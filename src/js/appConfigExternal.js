@@ -16,6 +16,13 @@ define([], function () {
       'Authorization': 'Basic TUNTSUREMV9NQ1NTVkMxREVWX01PQklMRV9BTk9OWU1PVVNfQVBQSUQ6VjNqeWMuNWtxcHRzbWY='
     },
     registrationUrl: 'https://mcssvc1dev-mcsidd1.mobileenv.us2.oraclecloud.com:443/mobile/platform/devices/register',
-    senderID: 'XXXXXXX' // Where the XXXXXXX maps to the project number in the Google Developer Console.
+    senderID: 'XXXXXXX', // Where the XXXXXXX maps to the project number in the Google Developer Console.,
+
+    //AWS Cognito
+    baseURL: 'https://nrwqqmdqq3.execute-api.eu-west-1.amazonaws.com/dev/',
+    signInPath: 'cognito/signin',
+    signUpPath: 'cognito/signup',
+    confirmUserPath: 'cognito/confirm-user',
+    changePassPath: 'cognito/change-pass'
   }
 })

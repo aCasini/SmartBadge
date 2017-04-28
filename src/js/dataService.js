@@ -14,6 +14,10 @@ define(['jquery', 'appConfig'], function ($, appConfig) {
 
   var baseUrl = appConfig.backendUrl;
   var registrationUrl = appConfig.registrationUrl;
+  //AWS BaseURL:
+  var awsBaseUrl = appConfig.baseURL;
+  var signInPath = appConfig.signInPath;
+
 
   // Note, the appConfig contains a Basic Authentication header. The use of Basic Auth is
   // not recommended for production apps. Using OAUTH is being tracked via bug 25025212.
@@ -27,17 +31,25 @@ define(['jquery', 'appConfig'], function ($, appConfig) {
     isOnline = mode;
   }
 
-  function signInSmartBadge(credentials) {
-    alert("SigIn into AWS Cognito ..");
-    alert(credentials.userName);
-    alert(credentials.passWord);
-    
+  function signInSmartBadge(credentials) {    
     return $.ajax({
       type: 'POST',
-      url: registrationUrl,
-      headers: baseHeaders,
-      data: JSON.stringify(credentials),
-      contentType: 'application/json; charset=UTF-8'
+      url: awsBaseUrl + signInPath,
+      crossDomain: true,
+      dataType: "json",
+      //headers: 'Access-Control-Allow-Origin: *',
+      data: JSON.stringify(credentials)
+      /*
+      success: function (response){
+        alert(JSON.stringify(response));
+      },
+      error: function (xhr, status) {
+        alert("Status Error: "+ status);
+        alert("xhr: "+JSON.stringify(xhr));
+        console.log("ERROR:"+status);
+      }
+      */
+      //contentType: 'application/json; charset=UTF-8'
     });
   }
 

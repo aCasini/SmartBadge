@@ -117,21 +117,19 @@ define(['jquery', 'dataService', 'appConfig'], function ($, data, appConfig) {
     }
 
     self.signInSmartBadge = function (credentials) {
-      /*
-      var credentials = {
-        'userName': 'kasoale',
-        'passWord': 'Pippo123'
-      }
-*/
-      alert("credentials created --> invoke the function");
+      //alert("credentials created --> invoke the function");
+      //data.signInSmartBadge(credentials);
+      SpinnerDialog.show("Sign In", "loading ..");
+      
+      data.signInSmartBadge(credentials).then(function (response) {
+        alert(JSON.stringify(response));
+        console.log('Registering Notifications Success: ', response);
+      }).fail(function (response) {
+        alert(JSON.stringify(response));
+        console.error('Registering Notifications Fail: ', response);
+      })
 
-       data.signInSmartBadge(credentials).then(function (response) {
-         alert(response);
-         console.log('Registering Notifications Success: ', response);
-       }).fail(function (response) {
-         alert(response);
-         console.error('Registering Notifications Fail: ', response);
-       })
+
     }
 
   }
