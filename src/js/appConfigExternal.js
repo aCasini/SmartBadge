@@ -3,7 +3,7 @@
  * The Universal Permissive License (UPL), Version 1.0
  */
 // app configuration for public release
-
+'use strict';
 define([], function () {
   return {
     appId: 'com.jet.FixItFast',

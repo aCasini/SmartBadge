@@ -31,7 +31,8 @@ define(['jquery', 'appConfig'], function ($, appConfig) {
     isOnline = mode;
   }
 
-  function signInSmartBadge(credentials) {    
+  function signInSmartBadge(credentials) {
+    alert("THERE");
     return $.ajax({
       type: 'POST',
       url: awsBaseUrl + signInPath,
@@ -39,17 +40,6 @@ define(['jquery', 'appConfig'], function ($, appConfig) {
       dataType: "json",
       //headers: 'Access-Control-Allow-Origin: *',
       data: JSON.stringify(credentials)
-      /*
-      success: function (response){
-        alert(JSON.stringify(response));
-      },
-      error: function (xhr, status) {
-        alert("Status Error: "+ status);
-        alert("xhr: "+JSON.stringify(xhr));
-        console.log("ERROR:"+status);
-      }
-      */
-      //contentType: 'application/json; charset=UTF-8'
     });
   }
 

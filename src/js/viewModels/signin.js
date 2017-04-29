@@ -10,13 +10,15 @@
  // signin page viewModel
  // In a real app, replace it with your authentication and logic
 'use strict';
-define(['ojs/ojcore', 'knockout', 'jquery', 'appController',
+define(['ojs/ojcore', 'knockout',
+        'jquery', 'appController',
         'ojs/ojrouter',
         'ojs/ojknockout',
         'ojs/ojcheckboxset',
         'ojs/ojinputtext',
         'ojs/ojbutton',
-        'ojs/ojanimation'], function(oj, ko, $, app) {
+        'ojs/ojanimation'
+        ], function(oj, ko, $, app) {
   function signinViewModel() {
     var self = this;
 
@@ -32,6 +34,7 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'appController',
     self.rememberUserName = ko.observable(['remember']);
     self.errorMessage = ko.observable();
     self.errorMessagePass = ko.observable();
+
 
     // Replace with sign in authentication
     self.signIn = function() {
@@ -57,8 +60,9 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'appController',
             "passWord": passWord
           }
           //app.pushClient.registerForNotifications();
-          app.pushClient.signInSmartBadge(credentials);
-          //oj.Router.rootInstance.go('incidents/tabdashboard');
+          //app.pushClient.signInSmartBadge(credentials);
+          app.signInSmartBadge(credentials);
+//          oj.Router.rootInstance.go('dashboard');
         }
       }
     };
