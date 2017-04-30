@@ -32,13 +32,11 @@ define(['jquery', 'appConfig'], function ($, appConfig) {
   }
 
   function signInSmartBadge(credentials) {
-    alert("THERE");
     return $.ajax({
       type: 'POST',
       url: awsBaseUrl + signInPath,
       crossDomain: true,
       dataType: "json",
-      //headers: 'Access-Control-Allow-Origin: *',
       data: JSON.stringify(credentials)
     });
   }

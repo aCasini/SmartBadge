@@ -9,6 +9,8 @@
 
  // signin page viewModel
  // In a real app, replace it with your authentication and logic
+
+
 'use strict';
 define(['ojs/ojcore', 'knockout',
         'jquery', 'appController',
@@ -17,8 +19,10 @@ define(['ojs/ojcore', 'knockout',
         'ojs/ojcheckboxset',
         'ojs/ojinputtext',
         'ojs/ojbutton',
-        'ojs/ojanimation'
+        'ojs/ojanimation',
+        'ojs/ojdialog'
         ], function(oj, ko, $, app) {
+
   function signinViewModel() {
     var self = this;
 
@@ -31,9 +35,56 @@ define(['ojs/ojcore', 'knockout',
     // Replace with state save logic for rememberUserName
     self.userName = ko.observable();
     self.passWord = ko.observable();
+    self.eMail = ko.observable();
     self.rememberUserName = ko.observable(['remember']);
     self.errorMessage = ko.observable();
     self.errorMessagePass = ko.observable();
+
+    //require(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'ojs/ojbutton', 'ojs/ojdialog'],
+    //function(oj, ko, $)
+    //{
+
+    //}
+    self.signUpOK = function(){
+      $( "#wideDialog" ).ojDialog("close");
+    }
+
+    self.signUpClose = function(){
+      $( "#wideDialog" ).ojDialog("close");
+    }
+
+    self.signUp = function(){
+
+      var initialVisibility = $("#wideDialog" ).ojDialog( "option", "initialVisibility" );
+      //alert("initialVisibility: "+initialVisibility);
+
+      $("#wideDialog" ).ojDialog( "option", "initialVisibility", "show" );
+      var initialVisibilityAfter = $("#wideDialog" ).ojDialog( "option", "initialVisibility" );
+      //alert("initialVisibilityAfter: "+initialVisibilityAfter);
+
+      $( "#wideDialog" ).ojDialog("open");
+      //alert("refreshed");
+
+      //ko.applyBindings(new dialogModel(), document.getElementById('dialogWrapper'));
+      /*
+        var message = "Do you want to create the user? please enter you eMail";
+        var title = "Sign-Up";
+        var buttonLabels = ["Yes","No"];
+        var defaultText = "yourUser@bridgeconsulting.it"
+
+        navigator.notification.prompt(message, promptCallback, title, buttonLabels, defaultText);
+
+        function promptCallback(result) {
+          if(result.buttonIndex == 1){
+            alert("The email with the confirmation code has been sent. Please confirm the resgistration");
+          }
+           console.log("You clicked " + result.buttonIndex + " button! \n" +
+              "You entered " +  result.input1);
+        }
+        */
+
+
+    };
 
 
     // Replace with sign in authentication

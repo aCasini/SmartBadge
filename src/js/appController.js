@@ -21,6 +21,7 @@ define(['ojs/ojcore',
       var self = this;
       //Load the dataModule by requireJS
       var data = require("dataService");
+      
       //alert("Data: "+data);
 
       self.signInSmartBadge = function (credentials) {
@@ -49,6 +50,7 @@ define(['ojs/ojcore',
       self.router = oj.Router.rootInstance;
 
       self.router.configure({
+      //'modal': {label: 'modal', isDefault: true},
        'signin': {label: 'Sign In', isDefault: true},
        'dashboard': {label: 'Dashboard'},
        'incidents': {label: 'Incidents'},

@@ -1,6 +1,7 @@
 <div class="oj-flex-item">
   <div class="oj-hybrid-padding-start">
-    <h1 class="demo-signin-appname"><div style="font-weight: 400; padding-top: 4px;">Smart Badge</div></h1>
+    <h1 class="demo-signin-appname">
+    <div style="font-weight: 400; padding-top: 4px;">Smart Badge</div></h1>
   </div>
 
   <div class="demo-signin-form-container oj-hybrid-padding">
@@ -44,6 +45,63 @@
           <label for="rememberUserName">Remember Credentials</label>
         </span>
       </div>
+
+<!-- List of Registration button or action -->
+      <div class="demo-signin-form-container oj-hybrid-padding">
+      <button id="buttonOpener"
+              class="demo-signin-button oj-hybrid-padding-horizontal"
+              data-bind="click: signUp,
+                         ojComponent:
+                          {
+                            component: 'ojButton',
+                            label: 'Sign Up',
+                            chroming: 'full'
+                          }">
+      </button>
+      </div>
+
+<!-- Popup SIGN-UP -->
+        <div id="wideDialog" class="ojDialog" title="ojDialog Title"
+          data-bind=  "ojComponent:{
+                          component: 'ojDialog',
+                          initialVisibility: 'hide'
+                          }">
+          <div class="oj-dialog-header" aria-labelledby="dialog-title-id">
+          <span id="dialog-title-id" class="oj-dialog-title"> User Registration</span>
+         </div>
+         <div class="oj-dialog-body">
+             <p>Enter the e-mail and confirm the registration</p>
+             <br>
+             <input id="MobilePTemail"
+                    placeholder="eMail"
+                    autocapitalize=off
+                    aria-label="eMail"
+                    data-bind="ojComponent:
+                                 {
+                                     component: 'ojInputText',
+                                     value: eMail,
+                                     required: true
+                                   }">
+
+
+         </div>
+         <div class="oj-dialog-footer">
+            <button data-bind="click: signUpOK,
+                               ojComponent:{component: 'ojButton',label: 'OK'}"></button>
+            <button id="buttonCancel" class=""
+                    data-bind="click: signUpClose,
+                               ojComponent:
+                               {
+                                    component: 'ojButton',
+                                    label: 'Cancel'
+                               }">
+            </button>
+         </div>
+        </div>
+
+
+
+
     </form>
   </div>
 </div>
