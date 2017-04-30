@@ -39,6 +39,7 @@ define(['ojs/ojcore', 'knockout',
     self.rememberUserName = ko.observable(['remember']);
     self.errorMessage = ko.observable();
     self.errorMessagePass = ko.observable();
+    self.errorMessageMail = ko.observable();
 
     //require(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'ojs/ojbutton', 'ojs/ojdialog'],
     //function(oj, ko, $)
@@ -46,7 +47,14 @@ define(['ojs/ojcore', 'knockout',
 
     //}
     self.signUpOK = function(){
-      $( "#wideDialog" ).ojDialog("close");
+      var email = $('#MobilePTemail').val();
+      if(email == ''){
+        $("#emailErrorMsg").text("Error: Fill the e-mail");
+      }else if(!email.endsWith("bridgeconsulting.it")){
+        $("#emailErrorMsg").text("Error: the email must has a bridgeconsulting domain");
+      }else{
+        $( "#wideDialog" ).ojDialog("close");
+      }
     }
 
     self.signUpClose = function(){
