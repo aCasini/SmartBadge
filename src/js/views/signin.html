@@ -102,6 +102,99 @@
             </div>
     <!-- END SignUP Popup -->
 
+    <!-- START: Confirm PopUp -->
+    <div id="confirmDialog" class="ojDialog" title="ojDialog Title"
+      data-bind=  "ojComponent:{
+                      component: 'ojDialog',
+                      initialVisibility: 'hide'
+                      }">
+      <div class="oj-dialog-header" aria-labelledby="dialog-title-id">
+      <span id="dialog-confirm-title-id" class="oj-dialog-title"> Confirm Registration</span>
+     </div>
+     <div class="oj-dialog-body">
+         <p>Enter below your registration code</p>
+         <br>
+         <input id="MobilePTconfcode"
+                placeholder="Confirm Code"
+                autocapitalize=off
+                aria-label="confcode"
+                data-bind="ojComponent:
+                             {
+                                 component: 'ojInputText',
+                                 value: confcode,
+                                 required: true
+                               }">
+                               <span style="color: #e46c6e;"
+                                     id="confcodeErrorMsg"
+                                     data-bind="text: errorMessageConfcode">
+                               </span>
+
+
+     </div>
+     <div class="oj-dialog-footer">
+        <button data-bind="click: confirmUpOK,
+                           ojComponent:{component: 'ojButton',label: 'OK'}"></button>
+        <button id="buttonCancelConfirm" class=""
+                data-bind="click: confirmClose,
+                           ojComponent:
+                           {
+                                component: 'ojButton',
+                                label: 'Cancel'
+                           }">
+        </button>
+     </div>
+    </div>
+    <!-- END: Confirm popup -->
+
+    <!-- START: Change Password Popup -->
+    <div id="changePassDialog" class="ojDialog" title="ojDialog Title"
+      data-bind=  "ojComponent:{
+                      component: 'ojDialog',
+                      initialVisibility: 'hide'
+                      }">
+      <div class="oj-dialog-header" aria-labelledby="dialog-title-id">
+      <span id="dialog-changePass-title-id" class="oj-dialog-title"> Change Password</span>
+     </div>
+     <div class="oj-dialog-body">
+         <p>Enter the below information to change the password</p>
+         <br>
+         <input id="MobilePTUsername_cp"
+                placeholder="User Name"
+                autocapitalize=off
+                aria-label="User Name"
+                data-bind="ojComponent:
+                             {
+                                 component: 'ojInputText',
+                                 value: userName_cp,
+                                 required: true
+                               }">
+        <input type="password"
+            id="MobilePTPassword_cp_old"
+            placeholder="Old Password"
+            aria-label="password"
+            data-bind="ojComponent: {component: 'ojInputPassword', value: passWord_cp_old, required: true }"
+            />
+            <input type="password"
+                id="MobilePTPassword_cp_new"
+                placeholder="New Password"
+                aria-label="password"
+                data-bind="ojComponent: {component: 'ojInputPassword', value: passWord_cp_new, required: true }"
+                />
+
+     </div>
+     <div class="oj-dialog-footer">
+        <button data-bind="click: changePassOK,
+                           ojComponent:{component: 'ojButton',label: 'OK'}"></button>
+        <button id="buttonCancelConfirm" class=""
+                data-bind="click: changePassClose,
+                           ojComponent:
+                           {
+                                component: 'ojButton',
+                                label: 'Cancel'
+                           }">
+        </button>
+     </div>
+    </div>
 
 
         </form>

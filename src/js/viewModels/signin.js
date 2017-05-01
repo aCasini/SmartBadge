@@ -36,16 +36,19 @@ define(['ojs/ojcore', 'knockout',
     self.userName = ko.observable();
     self.passWord = ko.observable();
     self.eMail = ko.observable();
+    self.confcode = ko.observable();
+    self.userName_cp = ko.observable();
+    self.passWord_cp_old = ko.observable();
+    self.passWord_cp_new = ko.observable();
     self.rememberUserName = ko.observable(['remember']);
     self.errorMessage = ko.observable();
     self.errorMessagePass = ko.observable();
     self.errorMessageMail = ko.observable();
+    self.errorMessageConfcode = ko.observable();
 
-    //require(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'ojs/ojbutton', 'ojs/ojdialog'],
-    //function(oj, ko, $)
-    //{
-
-    //}
+    /*
+    * OK SingUp Function
+    */
     self.signUpOK = function(){
       var email = $('#MobilePTemail').val();
       if(email == ''){
@@ -57,53 +60,84 @@ define(['ojs/ojcore', 'knockout',
       }
     }
 
+    /*
+    * CANCEL SingUp Function
+    */
     self.signUpClose = function(){
       $( "#wideDialog" ).ojDialog("close");
     }
 
+    /*
+    * Main function -> open the SingUp Popup
+    */
     self.signUp = function(){
-
       var initialVisibility = $("#wideDialog" ).ojDialog( "option", "initialVisibility" );
-      //alert("initialVisibility: "+initialVisibility);
 
       $("#wideDialog" ).ojDialog( "option", "initialVisibility", "show" );
       var initialVisibilityAfter = $("#wideDialog" ).ojDialog( "option", "initialVisibility" );
-      //alert("initialVisibilityAfter: "+initialVisibilityAfter);
 
       $( "#wideDialog" ).ojDialog("open");
-      //alert("refreshed");
-
-      //ko.applyBindings(new dialogModel(), document.getElementById('dialogWrapper'));
-      /*
-        var message = "Do you want to create the user? please enter you eMail";
-        var title = "Sign-Up";
-        var buttonLabels = ["Yes","No"];
-        var defaultText = "yourUser@bridgeconsulting.it"
-
-        navigator.notification.prompt(message, promptCallback, title, buttonLabels, defaultText);
-
-        function promptCallback(result) {
-          if(result.buttonIndex == 1){
-            alert("The email with the confirmation code has been sent. Please confirm the resgistration");
-          }
-           console.log("You clicked " + result.buttonIndex + " button! \n" +
-              "You entered " +  result.input1);
-        }
-        */
-
 
     };
 
+    /*
+    * Main function -> open the Confirmation Popup
+    */
     self.confirmSignUp = function() {
-      //TODO: implement me
-      alert("Confirm User Registration by code");
+      var initialVisibility = $("#confirmDialog" ).ojDialog( "option", "initialVisibility" );
+
+      $("#confirmDialog" ).ojDialog( "option", "initialVisibility", "show" );
+      var initialVisibilityAfter = $("#confirmDialog" ).ojDialog( "option", "initialVisibility" );
+
+      $( "#confirmDialog" ).ojDialog("open");
+    }
+
+    /*
+    * OK Confirmation Function
+    */
+    self.confirmUpOK = function(){
+      var confCode = $('#MobilePTconfcode').val();
+      var isnum = /^\d+$/.test(confCode);
+
+      if(isnum == false){
+        $("#confcodeErrorMsg").text("Error: Registration Code must contains only digits");
+      }else if(confCode == ''){
+        $("#confcodeErrorMsg").text("Error: Fill the Code to complete the registration");
+      }else{
+        //TODO: call the confir webService
+        $( "#confirmDialog" ).ojDialog("close");
+      }
+    }
+
+    /*
+    * CANCEL Confirmation Function
+    */
+    self.confirmClose = function() {
+      $( "#confirmDialog" ).ojDialog("close");
     }
 
     self.changePassSignUp = function() {
-      //TODO: implement me
       alert("Change Password");
+      var initialVisibility = $("#changePassDialog" ).ojDialog( "option", "initialVisibility" );
+
+      $("#changePassDialog" ).ojDialog( "option", "initialVisibility", "show" );
+      var initialVisibilityAfter = $("#changePassDialog" ).ojDialog( "option", "initialVisibility" );
+
+      $( "#changePassDialog" ).ojDialog("open");
     }
 
+    self.changePassOK = function(){
+      //TODO: implement me
+      $( "#changePassDialog" ).ojDialog("close");
+    }
+
+    self.changePassClose = function(){
+      $( "#changePassDialog" ).ojDialog("close");
+    }
+
+/*
+* === SING IN FUNCTION ====
+*/
     // Replace with sign in authentication
     self.signIn = function() {
       //Get UserName and Password
