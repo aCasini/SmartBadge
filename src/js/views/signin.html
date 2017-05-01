@@ -1,111 +1,162 @@
-<div class="oj-flex-item">
-  <div class="oj-hybrid-padding-start">
-    <h1 class="demo-signin-appname">
-    <div style="font-weight: 400; padding-top: 4px;">Smart Badge</div></h1>
+
+<div class="demo-signin-bg oj-flex oj-sm-justify-content-flex-end">
+  <div class="oj-flex-item oj-sm-9 demo-signin-column oj-flex oj-sm-flex-direction-column oj-sm-flex-wrap-nowrap">
+
+      <div class="demo-circle-flex-item oj-flex-item oj-sm-align-self-flex-end oj-flex oj-sm-align-items-flex-end">
+        <div class="demo-circle-logo-container">
+          <div class="demo-circle-logo"></div>
+        </div>
+      </div>
+
+    <div class="oj-flex-item">
+      <div class="oj-hybrid-padding-start">
+        <h1 class="demo-signin-appname">
+        <div style="font-weight: 400; padding-top: 4px;">Smart Badge</div></h1>
+      </div>
+
+      <div class="demo-signin-form-container oj-hybrid-padding">
+        <form class="demo-signin-form oj-hybrid-padding-vertical" method="post" name="signInForm">
+          <input id="MobilePTUsername"
+                 placeholder="User Name"
+                 autocapitalize=off
+                 aria-label="User Name"
+                 data-bind="ojComponent:
+                              {
+                                  component: 'ojInputText',
+                                  value: userName,
+                                  required: true
+                                }">
+         <span style="color: #e46c6e;"
+               id="userErrorMsg"
+               data-bind="text: errorMessage">
+         </span>
+
+
+
+          <input type="password"
+                 id="MobilePTPassword"
+                 placeholder="Password"
+                 aria-label="password"
+                 data-bind="ojComponent: {component: 'ojInputPassword', value: passWord, required: true }"
+          />
+          <span style="color: #e46c6e;"
+                id="passErrorMsg"
+                data-bind="text: errorMessagePass">
+          </span>
+
+          <div class="oj-hybrid-padding-top">
+            <button id="signInBtn" class="demo-signin-button oj-hybrid-padding-horizontal" data-bind="click: signIn, ojComponent: {component:'ojButton', label: 'Sign In', chroming: 'full'}"></button>
+            <a id="cannotSignInBtn" href="javascript:;" class="forgotLinkM">Can't sign in?</a>
+          </div>
+
+          <div id="rememberUserNameCheckBox" aria-label="Remeber User Name" data-bind="ojComponent: { component: 'ojCheckboxset', value: rememberUserName }" class='oj-checkboxset-no-chrome oj-checkboxset-input-start'>
+            <span class="oj-choice-item">
+              <input id="rememberUserName" type="checkbox" value="remember">
+              <label for="rememberUserName">Remember Credentials</label>
+            </span>
+          </div>
+
+
+
+    <!-- Popup SIGN-UP -->
+            <div id="wideDialog" class="ojDialog" title="ojDialog Title"
+              data-bind=  "ojComponent:{
+                              component: 'ojDialog',
+                              initialVisibility: 'hide'
+                              }">
+              <div class="oj-dialog-header" aria-labelledby="dialog-title-id">
+              <span id="dialog-title-id" class="oj-dialog-title"> User Registration</span>
+             </div>
+             <div class="oj-dialog-body">
+                 <p>Enter the e-mail and confirm the registration</p>
+                 <br>
+                 <input id="MobilePTemail"
+                        placeholder="eMail"
+                        autocapitalize=off
+                        aria-label="eMail"
+                        data-bind="ojComponent:
+                                     {
+                                         component: 'ojInputText',
+                                         value: eMail,
+                                         required: true
+                                       }">
+                                       <span style="color: #e46c6e;"
+                                             id="emailErrorMsg"
+                                             data-bind="text: errorMessageMail">
+                                       </span>
+
+
+             </div>
+             <div class="oj-dialog-footer">
+                <button data-bind="click: signUpOK,
+                                   ojComponent:{component: 'ojButton',label: 'OK'}"></button>
+                <button id="buttonCancel" class=""
+                        data-bind="click: signUpClose,
+                                   ojComponent:
+                                   {
+                                        component: 'ojButton',
+                                        label: 'Cancel'
+                                   }">
+                </button>
+             </div>
+            </div>
+    <!-- END SignUP Popup -->
+
+
+
+        </form>
+      </div>
+    </div>
+
+
+
   </div>
 
-  <div class="demo-signin-form-container oj-hybrid-padding">
-    <form class="demo-signin-form oj-hybrid-padding-vertical" method="post" name="signInForm">
-      <input id="MobilePTUsername"
-             placeholder="User Name"
-             autocapitalize=off
-             aria-label="User Name"
-             data-bind="ojComponent:
-                          {
-                              component: 'ojInputText',
-                              value: userName,
-                              required: true
-                            }">
-     <span style="color: #e46c6e;"
-           id="userErrorMsg"
-           data-bind="text: errorMessage">
-     </span>
 
+</div>
 
-
-      <input type="password"
-             id="MobilePTPassword"
-             placeholder="Password"
-             aria-label="password"
-             data-bind="ojComponent: {component: 'ojInputPassword', value: passWord, required: true }"
-      />
-      <span style="color: #e46c6e;"
-            id="passErrorMsg"
-            data-bind="text: errorMessagePass">
-      </span>
-
-      <div class="oj-hybrid-padding-top">
-        <button id="signInBtn" class="demo-signin-button oj-hybrid-padding-horizontal" data-bind="click: signIn, ojComponent: {component:'ojButton', label: 'Sign In', chroming: 'full'}"></button>
-        <a id="cannotSignInBtn" href="javascript:;" class="forgotLinkM">Can't sign in?</a>
-      </div>
-
-      <div id="rememberUserNameCheckBox" aria-label="Remeber User Name" data-bind="ojComponent: { component: 'ojCheckboxset', value: rememberUserName }" class='oj-checkboxset-no-chrome oj-checkboxset-input-start'>
-        <span class="oj-choice-item">
-          <input id="rememberUserName" type="checkbox" value="remember">
-          <label for="rememberUserName">Remember Credentials</label>
-        </span>
-      </div>
-
+<div id="signWrapperDiv" style="margin-top: 40%">
 <!-- List of Registration button or action -->
-      <div class="demo-signin-form-container oj-hybrid-padding">
-      <button id="buttonOpener"
-              class="demo-signin-button oj-hybrid-padding-horizontal"
-              data-bind="click: signUp,
-                         ojComponent:
-                          {
-                            component: 'ojButton',
-                            label: 'Sign Up',
-                            chroming: 'full'
-                          }">
-      </button>
+      <div class="demo-signin-form-container oj-hybrid-padding"
+          style="float: left;">
+        <button id="buttonOpener"
+                class="demo-signin-button oj-hybrid-padding-horizontal"
+                data-bind="click: signUp,
+                           ojComponent:
+                            {
+                              component: 'ojButton',
+                              label: 'Sign Up',
+                              chroming: 'full'
+                            }">
+        </button>
       </div>
 
-<!-- Popup SIGN-UP -->
-        <div id="wideDialog" class="ojDialog" title="ojDialog Title"
-          data-bind=  "ojComponent:{
-                          component: 'ojDialog',
-                          initialVisibility: 'hide'
-                          }">
-          <div class="oj-dialog-header" aria-labelledby="dialog-title-id">
-          <span id="dialog-title-id" class="oj-dialog-title"> User Registration</span>
-         </div>
-         <div class="oj-dialog-body">
-             <p>Enter the e-mail and confirm the registration</p>
-             <br>
-             <input id="MobilePTemail"
-                    placeholder="eMail"
-                    autocapitalize=off
-                    aria-label="eMail"
-                    data-bind="ojComponent:
-                                 {
-                                     component: 'ojInputText',
-                                     value: eMail,
-                                     required: true
-                                   }">
-                                   <span style="color: #e46c6e;"
-                                         id="emailErrorMsg"
-                                         data-bind="text: errorMessageMail">
-                                   </span>
-
-
-         </div>
-         <div class="oj-dialog-footer">
-            <button data-bind="click: signUpOK,
-                               ojComponent:{component: 'ojButton',label: 'OK'}"></button>
-            <button id="buttonCancel" class=""
-                    data-bind="click: signUpClose,
-                               ojComponent:
-                               {
-                                    component: 'ojButton',
-                                    label: 'Cancel'
-                               }">
-            </button>
-         </div>
-        </div>
-
-
-
-
-    </form>
+      <div class="demo-signin-form-container oj-hybrid-padding"
+          style="float: right;">
+        <button id="buttonOpenerConfirm"
+                class="demo-signin-button oj-hybrid-padding-horizontal"
+                data-bind="click: confirmSignUp,
+                           ojComponent:
+                            {
+                              component: 'ojButton',
+                              label: 'Confirm',
+                              chroming: 'full'
+                            }">
+        </button>
+      </div>
+</div>
+<div id="wrapperChangePassDiv" style="width: 100%">
+  <div class="demo-signin-form-container oj-hybrid-padding" style="float: center;">
+    <button id="buttonOpenerChangePass"
+            style="width: 100%"
+            class="demo-signin-button oj-hybrid-padding-horizontal"
+            data-bind="click: changePassSignUp,
+                       ojComponent:
+                        {
+                          component: 'ojButton',
+                          label: 'Change Password',
+                          chroming: 'full'
+                        }">
+    </button>
   </div>
 </div>

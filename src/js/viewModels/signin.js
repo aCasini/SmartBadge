@@ -94,6 +94,15 @@ define(['ojs/ojcore', 'knockout',
 
     };
 
+    self.confirmSignUp = function() {
+      //TODO: implement me
+      alert("Confirm User Registration by code");
+    }
+
+    self.changePassSignUp = function() {
+      //TODO: implement me
+      alert("Change Password");
+    }
 
     // Replace with sign in authentication
     self.signIn = function() {
