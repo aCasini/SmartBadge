@@ -11,6 +11,7 @@ define(['ojs/ojcore',
         'ojs/ojarraytabledatasource',
         'ojs/ojmoduleanimations',
         'knockout',
+        'jquery',
         //'dataService',
         'PushClient',
         'ConnectionDrawer'
@@ -42,18 +43,23 @@ define(['ojs/ojcore',
       }
 
       self.signUpSmartBadge = function (registration) {
+
         window.plugins.spinnerDialog.show();
         console.log("Call the AWS Cognito SigUp API");
 
         data.signUpSmartBadge(registration).then(function (response) {
-          if(response.errorMessage != ''){
+          if(typeof(response.errorMessage) != "undefined"){
             alert("ERROR: "+response.errorMessage);
             console.log("ERROR: "+response.errorMessage);
           }else{
-            var user = response.userName;
+            var user = response.userName.username;
             var tmpPass = response.passWord;
 
-            alert(JSON.stringify(response));
+            $( "#textInfo" ).text("You Registration info: " + user + " / " +tmpPass);
+            $( "#MobilePTUsername_conf" ).text(user);
+            $( "#infoDialog" ).ojDialog("open");
+
+
             console.log('Registering Notifications Success: ', response);
           }
           // Show spinner dialog
@@ -65,6 +71,35 @@ define(['ojs/ojcore',
           window.plugins.spinnerDialog.hide();
         })
       }
+
+      self.confUserSmartBadge = function(confirmUser){
+        //alert("Call the API .. " +confirmUser.confirmationCode);
+        window.plugins.spinnerDialog.show();
+        console.log("Call the AWS Cognito Confirmation User API");
+
+        data.confUserSmartBadge(confirmUser).then(function (response) {
+          if(typeof(response.errorMessage) != "undefined"){
+            alert("ERROR: "+response.errorMessage);
+            console.log("ERROR: "+response.errorMessage);
+          }else{
+            $( "#textInfo" ).text("User " + confirmUser.user + " has been CONFIRMED ! ");
+            $( "#infoDialog" ).ojDialog("open");
+
+
+            console.log('Registering Notifications Success: ', response);
+          }
+          // Show spinner dialog
+          window.plugins.spinnerDialog.hide();
+        }).fail(function (response) {
+          alert("ERROR: "+response.errorMessage);
+          //alert(JSON.stringify(response.errorMessage));
+          console.error('Registering Notifications Fail: ', response);
+          window.plugins.spinnerDialog.hide();
+        })
+
+      }
+
+      //********************
 
 
       // Save the theme so we can perform platform specific navigational animations

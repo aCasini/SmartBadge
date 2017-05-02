@@ -40,7 +40,10 @@ define(['ojs/ojcore', 'knockout',
     self.userName_cp = ko.observable();
     self.passWord_cp_old = ko.observable();
     self.passWord_cp_new = ko.observable();
+    self.userName_conf = ko.observable();
+
     self.rememberUserName = ko.observable(['remember']);
+
     self.errorMessage = ko.observable();
     self.errorMessagePass = ko.observable();
     self.errorMessageMail = ko.observable();
@@ -48,6 +51,7 @@ define(['ojs/ojcore', 'knockout',
     self.errorMessageUserNameCp = ko.observable();
     self.errorMessageOldPass = ko.observable();
     self.errorMessageNewPass = ko.observable();
+    self.errorMessageUserNameConf = ko.observable();
 
     /*
     * OK SingUp Function
@@ -112,6 +116,7 @@ define(['ojs/ojcore', 'knockout',
     self.confirmUpOK = function(){
       var confCode = $('#MobilePTconfcode').val();
       var isnum = /^\d+$/.test(confCode);
+      var user = $('#MobilePTUsername_conf').val();
 
       if(isnum == false){
         $("#confcodeErrorMsg").text("Error: Registration Code must contains only digits");
@@ -119,10 +124,22 @@ define(['ojs/ojcore', 'knockout',
       }else if(confCode == ''){
         $("#confcodeErrorMsg").text("Error: Fill the Code to complete the registration");
         return;
-      }else{
-        //TODO: call the confir webService
+      }else if(user == ''){
         $("#confcodeErrorMsg").text("");
+        $("#userNameConfErrorMsg").text("Error: Fill the user name");
 
+
+      }else{
+          //TODO: call the confir webService
+        $("#confcodeErrorMsg").text("");
+        $("#userNameConfErrorMsg").text("");
+
+        var confirmUser = {
+          "userName": user,
+          "confirmationCode": confCode
+        }
+
+        app.confUserSmartBadge(confirmUser);
 
         $( "#confirmDialog" ).ojDialog("close");
       }
@@ -188,6 +205,10 @@ define(['ojs/ojcore', 'knockout',
 
     self.changePassClose = function(){
       $( "#changePassDialog" ).ojDialog("close");
+    }
+
+    self.infoClose = function(){
+      $( "#infoDialog" ).ojDialog("close");
     }
 
 /*

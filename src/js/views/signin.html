@@ -114,6 +114,20 @@
      <div class="oj-dialog-body">
          <p>Enter below your registration code</p>
          <br>
+         <input id="MobilePTUsername_conf"
+                placeholder="User Name"
+                autocapitalize=off
+                aria-label="User Name"
+                data-bind="ojComponent:
+                             {
+                                 component: 'ojInputText',
+                                 value: userName_conf,
+                                 required: true
+                               }">
+        <span style="color: #e46c6e;"
+              id="userNameConfErrorMsg"
+              data-bind="text: errorMessageUserNameConf">
+        </span>
          <input id="MobilePTconfcode"
                 placeholder="Confirm Code"
                 autocapitalize=off
@@ -209,7 +223,28 @@
         </button>
      </div>
     </div>
+    <!-- END Change Pass popup -->
 
+    <!-- START General INFO popup -->
+    <div id="infoDialog" class="ojDialog" title="ojDialog Title"
+      data-bind=  "ojComponent:{
+                      component: 'ojDialog',
+                      initialVisibility: 'hide'
+                      }">
+      <div class="oj-dialog-header" aria-labelledby="dialog-title-id">
+      <span id="dialog-confirm-title-id" class="oj-dialog-title"> INFO</span>
+     </div>
+     <div class="oj-dialog-body">
+         <p id="textInfo"></p>
+         <br>
+     </div>
+     <div class="oj-dialog-footer">
+        <button data-bind="click: infoClose,
+                           ojComponent:{component: 'ojButton',label: 'OK'}"></button>
+
+     </div>
+    </div>
+    <!-- END General INFO popup -->
 
         </form>
       </div>

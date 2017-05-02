@@ -60,6 +60,21 @@ define(['jquery', 'appConfig'], function ($, appConfig) {
     });
   }
 
+  /*
+  * Function: confirmUser
+  *   description: call the confirmation user on aws cognito
+  */
+  function confUserSmartBadge(confirmUser) {
+    alert(awsBaseUrl + confirmUserPath);
+    return $.ajax({
+      type: 'POST',
+      url: awsBaseUrl + confirmUserPath,
+      crossDomain: true,
+      dataType: "json",
+      data: JSON.stringify(confirmUser)
+    });
+  }
+
 //*********************************************************
   function registerForNotifications(registration) {
     return $.ajax({
@@ -301,6 +316,7 @@ define(['jquery', 'appConfig'], function ($, appConfig) {
   return {
     signInSmartBadge: signInSmartBadge,
     signUpSmartBadge: signUpSmartBadge,
+    confUserSmartBadge: confUserSmartBadge,
     registerForNotifications: registerForNotifications,
     getCustomers: getCustomers,
     createCustomer: createCustomer,
