@@ -168,18 +168,32 @@
                                  value: userName_cp,
                                  required: true
                                }">
+        <span style="color: #e46c6e;"
+              id="userNameCpErrorMsg"
+              data-bind="text: errorMessageUserNameCp">
+        </span>
+
         <input type="password"
             id="MobilePTPassword_cp_old"
             placeholder="Old Password"
             aria-label="password"
             data-bind="ojComponent: {component: 'ojInputPassword', value: passWord_cp_old, required: true }"
             />
-            <input type="password"
-                id="MobilePTPassword_cp_new"
-                placeholder="New Password"
-                aria-label="password"
-                data-bind="ojComponent: {component: 'ojInputPassword', value: passWord_cp_new, required: true }"
-                />
+        <span style="color: #e46c6e;"
+            id="oldPassErrorMsg"
+            data-bind="text: errorMessageOldPass">
+        </span>
+
+        <input type="password"
+            id="MobilePTPassword_cp_new"
+            placeholder="New Password"
+            aria-label="password"
+            data-bind="ojComponent: {component: 'ojInputPassword', value: passWord_cp_new, required: true }"
+            />
+        <span style="color: #e46c6e;"
+            id="newPassErrorMsg"
+            data-bind="text: errorMessageNewPass">
+        </span>
 
      </div>
      <div class="oj-dialog-footer">

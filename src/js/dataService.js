@@ -17,6 +17,7 @@ define(['jquery', 'appConfig'], function ($, appConfig) {
   //AWS BaseURL:
   var awsBaseUrl = appConfig.baseURL;
   var signInPath = appConfig.signInPath;
+  var signUpPath = appConfig.signUpPath;
 
 
   // Note, the appConfig contains a Basic Authentication header. The use of Basic Auth is
@@ -31,6 +32,10 @@ define(['jquery', 'appConfig'], function ($, appConfig) {
     isOnline = mode;
   }
 
+/*
+*   Function: SignIn
+*     description: call the signIn API
+*/
   function signInSmartBadge(credentials) {
     return $.ajax({
       type: 'POST',
@@ -41,6 +46,21 @@ define(['jquery', 'appConfig'], function ($, appConfig) {
     });
   }
 
+/*
+*   Function: signUp
+*     description: call the signUp API
+*/
+  function signUpSmartBadge(userRegistration) {
+    return $.ajax({
+      type: 'POST',
+      url: awsBaseUrl + signUpPath,
+      crossDomain: true,
+      dataType: "json",
+      data: JSON.stringify(userRegistration)
+    });
+  }
+
+//*********************************************************
   function registerForNotifications(registration) {
     return $.ajax({
       type: 'POST',
@@ -280,6 +300,7 @@ define(['jquery', 'appConfig'], function ($, appConfig) {
 
   return {
     signInSmartBadge: signInSmartBadge,
+    signUpSmartBadge: signUpSmartBadge,
     registerForNotifications: registerForNotifications,
     getCustomers: getCustomers,
     createCustomer: createCustomer,

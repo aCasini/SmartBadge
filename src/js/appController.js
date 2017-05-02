@@ -21,16 +21,13 @@ define(['ojs/ojcore',
       var self = this;
       //Load the dataModule by requireJS
       var data = require("dataService");
-      
-      //alert("Data: "+data);
+
 
       self.signInSmartBadge = function (credentials) {
-        //alert("credentials created --> invoke the function");
         // Show spinner dialog
-
-        //alert(data);
         window.plugins.spinnerDialog.show();
         console.log("Call the AWS Cognito SigIn API");
+
         data.signInSmartBadge(credentials).then(function (response) {
           alert(JSON.stringify(response));
           console.log('Registering Notifications Success: ', response);
@@ -43,6 +40,33 @@ define(['ojs/ojcore',
           window.plugins.spinnerDialog.hide();
         })
       }
+
+      self.signUpSmartBadge = function (registration) {
+        window.plugins.spinnerDialog.show();
+        console.log("Call the AWS Cognito SigUp API");
+
+        data.signUpSmartBadge(registration).then(function (response) {
+          if(response.errorMessage != ''){
+            alert("ERROR: "+response.errorMessage);
+            console.log("ERROR: "+response.errorMessage);
+          }else{
+            var user = response.userName;
+            var tmpPass = response.passWord;
+
+            alert(JSON.stringify(response));
+            console.log('Registering Notifications Success: ', response);
+          }
+          // Show spinner dialog
+          window.plugins.spinnerDialog.hide();
+        }).fail(function (response) {
+          alert("ERROR: "+response.errorMessage);
+          //alert(JSON.stringify(response.errorMessage));
+          console.error('Registering Notifications Fail: ', response);
+          window.plugins.spinnerDialog.hide();
+        })
+      }
+
+
       // Save the theme so we can perform platform specific navigational animations
       var platform = oj.ThemeUtils.getThemeTargetPlatform();
 

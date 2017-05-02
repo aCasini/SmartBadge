@@ -45,6 +45,9 @@ define(['ojs/ojcore', 'knockout',
     self.errorMessagePass = ko.observable();
     self.errorMessageMail = ko.observable();
     self.errorMessageConfcode = ko.observable();
+    self.errorMessageUserNameCp = ko.observable();
+    self.errorMessageOldPass = ko.observable();
+    self.errorMessageNewPass = ko.observable();
 
     /*
     * OK SingUp Function
@@ -53,10 +56,21 @@ define(['ojs/ojcore', 'knockout',
       var email = $('#MobilePTemail').val();
       if(email == ''){
         $("#emailErrorMsg").text("Error: Fill the e-mail");
+        return;
       }else if(!email.endsWith("bridgeconsulting.it")){
         $("#emailErrorMsg").text("Error: the email must has a bridgeconsulting domain");
+        return;
       }else{
+
+        var registration = {
+          "email": email
+        };
+        //CALL the API
+
+        app.signUpSmartBadge(registration);
+
         $( "#wideDialog" ).ojDialog("close");
+
       }
     }
 
@@ -101,10 +115,15 @@ define(['ojs/ojcore', 'knockout',
 
       if(isnum == false){
         $("#confcodeErrorMsg").text("Error: Registration Code must contains only digits");
+        return;
       }else if(confCode == ''){
         $("#confcodeErrorMsg").text("Error: Fill the Code to complete the registration");
+        return;
       }else{
         //TODO: call the confir webService
+        $("#confcodeErrorMsg").text("");
+
+
         $( "#confirmDialog" ).ojDialog("close");
       }
     }
@@ -117,7 +136,6 @@ define(['ojs/ojcore', 'knockout',
     }
 
     self.changePassSignUp = function() {
-      alert("Change Password");
       var initialVisibility = $("#changePassDialog" ).ojDialog( "option", "initialVisibility" );
 
       $("#changePassDialog" ).ojDialog( "option", "initialVisibility", "show" );
@@ -127,8 +145,45 @@ define(['ojs/ojcore', 'knockout',
     }
 
     self.changePassOK = function(){
-      //TODO: implement me
-      $( "#changePassDialog" ).ojDialog("close");
+      var userName = $('#MobilePTUsername_cp').val();
+      var oldPassword = $('#MobilePTPassword_cp_old').val();
+      var newPassword = $('#MobilePTPassword_cp_new').val();
+
+      //Start the check
+      if(userName == ''){
+        $("#userNameCpErrorMsg").text("Error: Enter an User Name value");
+        return;
+      }else if(oldPassword == ''){
+        $("#oldPassErrorMsg").text("Error: Enter the Old Passwords");
+        //reset old error
+        $("#userNameCpErrorMsg").text("");
+        return;
+      }else if(newPassword == ''){
+        $("#newPassErrorMsg").text("Error: Enter the New Passwords");
+        //reset old errors
+        $("#userNameCpErrorMsg").text("");
+        $("#oldPassErrorMsg").text("");
+        return;
+      }else if(oldPassword == newPassword){
+        $("#oldPassErrorMsg").text("Error: The passWord MUST be different");
+        $("#newPassErrorMsg").text("Error: The passWord MUST be different");
+        //reset old errors
+        $("#userNameCpErrorMsg").text("");
+        return;
+      }else{
+        //CALL THE Change pass ws
+        $("#userNameCpErrorMsg").text("");
+        $("#oldPassErrorMsg").text("");
+        $("#newPassErrorMsg").text("");
+
+        //TODO: implement me
+
+
+
+        $( "#changePassDialog" ).ojDialog("close");
+      }
+
+
     }
 
     self.changePassClose = function(){
