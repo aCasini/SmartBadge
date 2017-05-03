@@ -121,16 +121,10 @@ define(['ojs/ojcore', 'knockout',
       if(isnum == false){
         $("#confcodeErrorMsg").text("Error: Registration Code must contains only digits");
         return;
-      }else if(confCode == ''){
-        $("#confcodeErrorMsg").text("Error: Fill the Code to complete the registration");
-        return;
       }else if(user == ''){
         $("#confcodeErrorMsg").text("");
         $("#userNameConfErrorMsg").text("Error: Fill the user name");
-
-
       }else{
-          //TODO: call the confir webService
         $("#confcodeErrorMsg").text("");
         $("#userNameConfErrorMsg").text("");
 
@@ -193,9 +187,13 @@ define(['ojs/ojcore', 'knockout',
         $("#oldPassErrorMsg").text("");
         $("#newPassErrorMsg").text("");
 
-        //TODO: implement me
+        var changePassword = {
+          "userName" : userName,
+          "oldPassword" : oldPassword,
+          "newPassword" : newPassword
+        }
 
-
+        app.changePasswordSmartBadge(changePassword);
 
         $( "#changePassDialog" ).ojDialog("close");
       }

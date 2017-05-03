@@ -23,7 +23,9 @@ define(['ojs/ojcore',
       //Load the dataModule by requireJS
       var data = require("dataService");
 
-
+      /*
+      * Function : call the AWs APIs for Cognito SignIn user
+      */
       self.signInSmartBadge = function (credentials) {
         // Show spinner dialog
         window.plugins.spinnerDialog.show();
@@ -42,6 +44,9 @@ define(['ojs/ojcore',
         })
       }
 
+      /*
+      * Function : call the AWs APIs for Cognito SignUp user
+      */
       self.signUpSmartBadge = function (registration) {
 
         window.plugins.spinnerDialog.show();
@@ -55,8 +60,41 @@ define(['ojs/ojcore',
             var user = response.userName.username;
             var tmpPass = response.passWord;
 
-            $( "#textInfo" ).text("You Registration info: " + user + " / " +tmpPass);
-            $( "#MobilePTUsername_conf" ).text(user);
+            $("#textInfo" ).text("You Registration info: " + user + " / " +tmpPass + "\n  -> Please, change your password aftet confirmation");
+            //Setting values in confirmation popup
+            $("#MobilePTUsername_conf").val(user);
+            $("#MobilePTconfcode").val(user);
+            //Setting values in change pass popup
+            $("#MobilePTUsername_cp").val(user);
+            $('#MobilePTPassword_cp_old').val(tmpPass);
+            $("#infoDialog" ).ojDialog("open");
+
+
+            console.log('Registering Notifications Success: ', response);
+          }
+          // Show spinner dialog
+          window.plugins.spinnerDialog.hide();
+        }).fail(function (response) {
+          alert("ERROR: "+response.errorMessage);
+          //alert(JSON.stringify(response.errorMessage));
+          console.error('Registering Notifications Fail: ', response);
+          window.plugins.spinnerDialog.hide();
+        })
+      }
+
+      /*
+      * Function : call the AWs APIs for Cognito confirm user
+      */
+      self.confUserSmartBadge = function(confirmUser){
+        window.plugins.spinnerDialog.show();
+        console.log("Call the AWS Cognito Confirmation User API");
+
+        data.confUserSmartBadge(confirmUser).then(function (response) {
+          if(typeof(response.errorMessage) != "undefined"){
+            alert("ERROR: "+response.errorMessage);
+            console.log("ERROR: "+response.errorMessage);
+          }else{
+            $( "#textInfo" ).text("User " + confirmUser.userName + " has been CONFIRMED");
             $( "#infoDialog" ).ojDialog("open");
 
 
@@ -72,19 +110,20 @@ define(['ojs/ojcore',
         })
       }
 
-      self.confUserSmartBadge = function(confirmUser){
-        //alert("Call the API .. " +confirmUser.confirmationCode);
+      /*
+      * Function : call the AWS APIs for Change Password in cognito user-pool
+      */
+      self.changePasswordSmartBadge = function(changePassword){
         window.plugins.spinnerDialog.show();
-        console.log("Call the AWS Cognito Confirmation User API");
+        console.log("Call the AWS Cognito Change User Password API");
 
-        data.confUserSmartBadge(confirmUser).then(function (response) {
+        data.changePasswordSmartBadge(changePassword).then(function (response) {
           if(typeof(response.errorMessage) != "undefined"){
             alert("ERROR: "+response.errorMessage);
             console.log("ERROR: "+response.errorMessage);
           }else{
-            $( "#textInfo" ).text("User " + confirmUser.user + " has been CONFIRMED ! ");
+            $( "#textInfo" ).text("Great! Password Changed");
             $( "#infoDialog" ).ojDialog("open");
-
 
             console.log('Registering Notifications Success: ', response);
           }
@@ -96,7 +135,6 @@ define(['ojs/ojcore',
           console.error('Registering Notifications Fail: ', response);
           window.plugins.spinnerDialog.hide();
         })
-
       }
 
       //********************

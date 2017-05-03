@@ -18,6 +18,8 @@ define(['jquery', 'appConfig'], function ($, appConfig) {
   var awsBaseUrl = appConfig.baseURL;
   var signInPath = appConfig.signInPath;
   var signUpPath = appConfig.signUpPath;
+  var signConfirmPath = appConfig.confirmUserPath;
+  var signChangePassPath = appConfig.changePassPath;
 
 
   // Note, the appConfig contains a Basic Authentication header. The use of Basic Auth is
@@ -65,13 +67,26 @@ define(['jquery', 'appConfig'], function ($, appConfig) {
   *   description: call the confirmation user on aws cognito
   */
   function confUserSmartBadge(confirmUser) {
-    alert(awsBaseUrl + confirmUserPath);
     return $.ajax({
       type: 'POST',
-      url: awsBaseUrl + confirmUserPath,
+      url: awsBaseUrl + signConfirmPath,
       crossDomain: true,
       dataType: "json",
       data: JSON.stringify(confirmUser)
+    });
+  }
+
+  /*
+  * Function: changePasswordSmartBadge
+  *   description: change the user password
+  */
+  function changePasswordSmartBadge(changePassword) {
+    return $.ajax({
+      type: 'POST',
+      url: awsBaseUrl + signChangePassPath,
+      crossDomain: true,
+      dataType: "json",
+      data: JSON.stringify(changePassword)
     });
   }
 
@@ -317,6 +332,7 @@ define(['jquery', 'appConfig'], function ($, appConfig) {
     signInSmartBadge: signInSmartBadge,
     signUpSmartBadge: signUpSmartBadge,
     confUserSmartBadge: confUserSmartBadge,
+    changePasswordSmartBadge: changePasswordSmartBadge,
     registerForNotifications: registerForNotifications,
     getCustomers: getCustomers,
     createCustomer: createCustomer,
