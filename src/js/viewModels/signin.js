@@ -31,10 +31,10 @@ define(['ojs/ojcore', 'knockout',
       var animateOptions = { 'delay': 0, 'duration': '1s', 'timingFunction': 'ease-out' };
       oj.AnimationUtils['fadeIn']($('.demo-signin-bg')[0], animateOptions);
     }
-
+    //alert(window.localStorage.getItem("userName"));
     // Replace with state save logic for rememberUserName
-    self.userName = ko.observable();
-    self.passWord = ko.observable();
+    self.userName = ko.observable(window.localStorage.getItem("userName"));
+    self.passWord = ko.observable(window.localStorage.getItem("passWord"));
     self.eMail = ko.observable();
     self.confcode = ko.observable();
     self.userName_cp = ko.observable();
@@ -217,7 +217,10 @@ define(['ojs/ojcore', 'knockout',
       //Get UserName and Password
       let userName = $('#MobilePTUsername').val();
       let passWord = $('#MobilePTPassword').val();
-
+      window.localStorage.setItem("userName", userName);
+      window.localStorage.setItem("passWord", passWord);
+      //sessionStorage.userName = userName;
+      //sessionStorage.passWord = passWord;
 
       if(userName == ''){
         $("#userErrorMsg").text("Error: Fill the userName");
@@ -238,6 +241,7 @@ define(['ojs/ojcore', 'knockout',
           //app.pushClient.registerForNotifications();
           //app.pushClient.signInSmartBadge(credentials);
           app.signInSmartBadge(credentials);
+          //sessionStorage.userName = "AAAA";
 //          oj.Router.rootInstance.go('dashboard');
         }
       }

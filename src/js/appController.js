@@ -32,10 +32,15 @@ define(['ojs/ojcore',
         console.log("Call the AWS Cognito SigIn API");
 
         data.signInSmartBadge(credentials).then(function (response) {
-          alert(JSON.stringify(response));
+          //alert(JSON.stringify(response));
           console.log('Registering Notifications Success: ', response);
           // Show spinner dialog
+          $('#navigationBarID').css('display','inline');
           window.plugins.spinnerDialog.hide();
+          
+          sessionStorage.refreshToken=response.refreshToken.token;
+          sessionStorage.accessToken=response.accessToken.jwtToken;
+
           oj.Router.rootInstance.go('dashboard');
         }).fail(function (response) {
           alert(JSON.stringify(response));
@@ -63,7 +68,7 @@ define(['ojs/ojcore',
             $("#textInfo" ).text("You Registration info: " + user + " / " +tmpPass + "\n  -> Please, change your password aftet confirmation");
             //Setting values in confirmation popup
             $("#MobilePTUsername_conf").val(user);
-            $("#MobilePTconfcode").val(user);
+
             //Setting values in change pass popup
             $("#MobilePTUsername_cp").val(user);
             $('#MobilePTPassword_cp_old').val(tmpPass);

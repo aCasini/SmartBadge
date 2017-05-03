@@ -7,13 +7,14 @@
  */
 define(['ojs/ojcore', 'knockout', 'jquery', 'appController'],
  function(oj, ko, $, app) {
-  
+
     function DashboardViewModel() {
       var self = this;
 
+      alert(sessionStorage.accessToken);
       // Header Config
       self.headerConfig = {'viewName': 'header', 'viewModelFactory': app.getHeaderModel()};
-      
+
       // Below are a subset of the ViewModel methods invoked by the ojModule binding
       // Please reference the ojModule jsDoc for additionaly available methods.
 
@@ -47,7 +48,7 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'appController'],
 
 
       /**
-       * Optional ViewModel method invoked after the bindings are applied on this View. 
+       * Optional ViewModel method invoked after the bindings are applied on this View.
        * If the current View is retrieved from cache, the bindings will not be re-applied
        * and this callback will not be invoked.
        * @param {Object} info - An object with the following key-value pairs:
