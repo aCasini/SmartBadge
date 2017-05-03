@@ -16,9 +16,49 @@
   <div class="oj-applayout-content">
     <div role="main" class="oj-hybrid-applayout-content">
       <div class="oj-hybrid-padding">
-        <h3>Dashboard Content Area</h3>
+        <h3>Dashboard SmartBadge</h3>
         <div>
-            To change the content of this section, you will make edits to the dashboard.html file located in the /js/views folder.
+            <div id="map-canvas"></div>
+            <div class="oj-hybrid-padding-top">
+
+              <div id="main_wrapper_id">
+          			<div id="first_wrapper_id">
+          				<div id="start_wrapper_id"
+          					  style="float: left">
+          					<button class="demo-signin-button oj-hybrid-padding-horizontal"
+                            data-bind="click: inTimecardEvent,
+                                       ojComponent:
+                                        {
+                                          component: 'ojButton',
+                                          label: 'Start Work'
+                                        }">
+                    </button>
+          				</div>
+          				<div id="end_wrapper_id"
+          					  style="float: right">
+          					<button class="demo-signin-button oj-hybrid-padding-horizontal"
+                            data-bind="click: outTimecardEvent,
+                                       ojComponent:
+                                        {
+                                          component: 'ojButton',
+                                          label: 'End Work'
+                                        }">
+                    </button>
+          				</div>
+          			</div>
+          			<div id="second_wrapper_id">
+          				<div id="start_break_wrapper_id"
+          					  style="float: left">
+          					<button>Start Break</button>
+          				</div>
+          				<div id="end_break_wrapper_id"
+          					  style="float: right">
+          					<button>End Break</button>
+          				</div>
+          			</div>
+          		</div>
+
+          </div>
         </div>
       </div>
     </div>

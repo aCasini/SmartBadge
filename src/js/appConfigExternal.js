@@ -24,5 +24,6 @@ define([], function () {
     signUpPath: 'cognito/signup',
     confirmUserPath: 'cognito/confirm-user',
     changePassPath: 'cognito/change-pass'
+    //googleMapApiKey: 'AIzaSyCj1MFqRLfXutvNfY07B5kzWhC8kJZyqLI'
   }
 })

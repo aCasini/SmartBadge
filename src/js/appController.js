@@ -12,11 +12,11 @@ define(['ojs/ojcore',
         'ojs/ojmoduleanimations',
         'knockout',
         'jquery',
-        //'dataService',
-        'PushClient',
+        'dataService',
+        //'PushClient',
         'ConnectionDrawer'
       ],
-  function(oj, ko, PushClient, ConnectionDrawer) {
+  function(oj, ko, ConnectionDrawer) {
 
      function ControllerViewModel() {
       var self = this;
@@ -37,7 +37,7 @@ define(['ojs/ojcore',
           // Show spinner dialog
           $('#navigationBarID').css('display','inline');
           window.plugins.spinnerDialog.hide();
-          
+
           sessionStorage.refreshToken=response.refreshToken.token;
           sessionStorage.accessToken=response.accessToken.jwtToken;
 
@@ -152,9 +152,8 @@ define(['ojs/ojcore',
       self.router = oj.Router.rootInstance;
 
       self.router.configure({
-      //'modal': {label: 'modal', isDefault: true},
-       'signin': {label: 'Sign In', isDefault: true},
-       'dashboard': {label: 'Dashboard'},
+       'signin': {label: 'Sign In'},
+       'dashboard': {label: 'Dashboard', isDefault: true},
        'incidents': {label: 'Incidents'},
        'customers': {label: 'Customers'},
        'profile': {label: 'Profile'},

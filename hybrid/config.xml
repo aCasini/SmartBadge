@@ -11,6 +11,14 @@
     <plugin name="cordova-plugin-whitelist" spec="1"/>
     <plugin name="cordova-plugin-spinnerdialog" spec="1"/>
     <plugin name="cordova-plugin-dialogs" spec="1"/>
+    <plugin name="cordova-plugin-geolocation" spec="1"/>
+<!--
+    <plugin name="cordova-plugin-googlemaps" spec="1"/>
+  -->
+  <!-- Access to all the subdomains on google.com -->
+    <access origin="http://*.google.com/*" />
+    <access origin="http://*.googleapis.com/*" />
+    <access origin="http://*.gstatic.com/*" />
     <access origin="*"/>
     <allow-intent href="http://*/*"/>
     <allow-intent href="https://*/*"/>
@@ -18,6 +26,9 @@
     <allow-intent href="sms:*"/>
     <allow-intent href="mailto:*"/>
     <allow-intent href="geo:*"/>
+    <allow-navigation href="*:://*.google.com/*" />
+
+
     <platform name="windows"><preference name="windows-target-version" value="10.0"/><icon src="res/icon/windows/Square30x30Logo.scale-100.png" width="30" height="30"/><icon src="res/icon/windows/Square44x44Logo.scale-100.png" width="44" height="44"/><icon src="res/icon/windows/Square44x44Logo.scale-240.png" width="106" height="106"/><icon src="res/icon/windows/Square70x70Logo.scale-100.png" width="70" height="70"/><icon src="res/icon/windows/Square71x71Logo.scale-100.png" width="71" height="71"/><icon src="res/icon/windows/Square71x71Logo.scale-240.png" width="170" height="170"/><icon src="res/icon/windows/Square150x150Logo.scale-100.png" width="150" height="150"/><icon src="res/icon/windows/Square150x150Logo.scale-240.png" width="360" height="360"/><icon src="res/icon/windows/Square310x310Logo.scale-100.png" width="310" height="310"/><icon src="res/icon/windows/Wide310x150Logo.scale-100.png" width="310" height="150"/><icon src="res/icon/windows/Wide310x150Logo.scale-240.png" width="744" height="360"/><splash src="res/screen/windows/SplashScreen.scale-100.png" width="620" height="300"/><splash src="res/screen/windows/SplashScreenPhone.scale-240.png" width="1152" height="1920"/></platform><platform name="android">
         <allow-intent href="market:*"/>
     <preference name="DisallowOverscroll" value="true"/><icon src="res/icon/android/icon-ldpi.png" width="36" height="36"/><icon src="res/icon/android/icon-mdpi.png" width="48" height="48"/><icon src="res/icon/android/icon-hdpi.png" width="72" height="72"/><icon src="res/icon/android/icon-xhdpi.png" width="96" height="96"/><icon src="res/icon/android/icon-xxhdpi.png" width="144" height="144"/><icon src="res/icon/android/icon-xxxhdpi.png" width="192" height="192"/><splash src="res/screen/android/splash-land-ldpi.9.png" density="land-ldpi"/><splash src="res/screen/android/splash-land-mdpi.9.png" density="land-mdpi"/><splash src="res/screen/android/splash-land-hdpi.9.png" density="land-hdpi"/><splash src="res/screen/android/splash-land-xhdpi.9.png" density="land-xhdpi"/><splash src="res/screen/android/splash-land-xxhdpi.9.png" density="land-xxhdpi"/><splash src="res/screen/android/splash-land-xxxhdpi.9.png" density="land-xxxhdpi"/><splash src="res/screen/android/splash-port-hdpi.9.png" density="port-hdpi"/><splash src="res/screen/android/splash-port-ldpi.9.png" density="port-ldpi"/><splash src="res/screen/android/splash-port-mdpi.9.png" density="port-mdpi"/><splash src="res/screen/android/splash-port-xhdpi.9.png" density="port-xhdpi"/><splash src="res/screen/android/splash-port-xxhdpi.9.png" density="port-xxhdpi"/><splash src="res/screen/android/splash-port-xxxhdpi.9.png" density="port-xxxhdpi"/></platform>

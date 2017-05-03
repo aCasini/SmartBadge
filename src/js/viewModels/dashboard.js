@@ -11,9 +11,20 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'appController'],
     function DashboardViewModel() {
       var self = this;
 
-      alert(sessionStorage.accessToken);
+      var accessToken = sessionStorage.accessToken;
+
+
+
       // Header Config
       self.headerConfig = {'viewName': 'header', 'viewModelFactory': app.getHeaderModel()};
+
+      self.inTimecardEvent = function(){
+        alert("add a IN timecard event");
+      }
+
+      self.outTimecardEvent = function(){
+        alert("add a OUT timecard event");
+      }
 
       // Below are a subset of the ViewModel methods invoked by the ojModule binding
       // Please reference the ojModule jsDoc for additionaly available methods.
