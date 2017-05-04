@@ -15,10 +15,11 @@
 <!--
     <plugin name="cordova-plugin-googlemaps" spec="1"/>
   -->
-  <!-- Access to all the subdomains on google.com -->
+  <!-- Access to all the subdomains on google.com
     <access origin="http://*.google.com/*" />
     <access origin="http://*.googleapis.com/*" />
     <access origin="http://*.gstatic.com/*" />
+  -->
     <access origin="*"/>
     <allow-intent href="http://*/*"/>
     <allow-intent href="https://*/*"/>
