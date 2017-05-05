@@ -144,7 +144,6 @@ define(['ojs/ojcore',
 
       //********************
 
-
       // Save the theme so we can perform platform specific navigational animations
       var platform = oj.ThemeUtils.getThemeTargetPlatform();
 
@@ -153,8 +152,8 @@ define(['ojs/ojcore',
 
       self.router.configure({
        'signin': {label: 'Sign In'},
-       'dashboard': {label: 'Dashboard', isDefault: true},
-       'incidents': {label: 'Incidents'},
+       'dashboard': {label: 'Dashboard'},
+       'incidents': {label: 'Incidents', isDefault: true},
        'customers': {label: 'Customers'},
        'profile': {label: 'Profile'},
        'about': {label: 'About'}

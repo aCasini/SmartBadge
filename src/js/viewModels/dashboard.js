@@ -6,172 +6,115 @@
  * Your dashboard ViewModel code goes here
  */
  // Renders map view using either Oracle mapViewer or Google Maps
+
+ $(document).ready(function () {
+   ko.applyBindings(viewModel);
+});
+
+
 'use strict';
 define(['ojs/ojcore', 'knockout', 'jquery', 'appController', 'dataService', 'ojs/ojknockout', 'oraclemapviewer'],
 function(oj, ko, $, app, data) {
     function DashboardViewModel() {
-      var self = this;
 
-      var accessToken = sessionStorage.accessToken;
-
-
-      // load incidents locations
-      self.handleActivated = function(params) {
-        // self.incidentsPromise = params.valueAccessor().params['incidentsPromise'];
-
-        self.incidentsPromise = data.getIncidents();
-
-        self.incidentsPromise.then(function(response) {
-          var incidentsArr = JSON.parse(response).result;
-          self.map().incidents(incidentsArr);
+        var self = this;
+        self.mapOne = ko.observable({
+            lat: ko.observable(0),
+            lng:ko.observable(0)
         });
 
-        return self.incidentsPromise;
-      };
 
-      // custom bindings for map
-      self.map = ko.observable({
-        lat: ko.observable(),
-        lng: ko.observable(),
-        incidents: ko.observable()
-      });
+        var browserSupportFlag;
+        if(navigator.geolocation){
+          browserSupportFlag = true;
 
-      var browserSupportFlag;
+          //retrieval the current position
+          navigator.geolocation.getCurrentPosition(function(position){
+            var lat = position.coords.latitude;
+            var lng = position.coords.longitude;
+            var timestamp = position.timestamp;
+            console.log("Latitude: "+lat);
+            console.log("Longitude: "+lng);
+            console.log("Timestamp: "+timestamp);
 
-      // Try W3C Geolocation (Preferred)
+            self.mapOne().lat(lat);
+            self.mapOne().lng(lng);
 
-      if(navigator.geolocation) {
-        browserSupportFlag = true;
-        navigator.geolocation.getCurrentPosition(function(position) {
-          alert("lat: "+position.coords.latitude);
-          alert("lng: "+position.coords.longitude);
-          alert('Latitude: '          + position.coords.latitude          + '\n' +
-                'Longitude: '         + position.coords.longitude         + '\n' +
-                'Altitude: '          + position.coords.altitude          + '\n' +
-                'Accuracy: '          + position.coords.accuracy          + '\n' +
-                'Altitude Accuracy: ' + position.coords.altitudeAccuracy  + '\n' +
-                'Heading: '           + position.coords.heading           + '\n' +
-                'Speed: '             + position.coords.speed             + '\n' +
-                'Timestamp: '         + position.timestamp                + '\n');
-          self.map().lat(43.7772631);
-          self.map().lng(11.2604426);
-        }, function() {
+            var latLng = new google.maps.LatLng(lat,lng);
+
+            //alert("PRE: "+ self.mapOne().marker.position);
+
+
+            self.mapOne().marker.setPosition(latLng);
+
+            //alert("POST: "+ self.mapOne().marker.position);
+          }, function(){
+            self._handleNoGeolocation(browserSupportFlag);
+          });
+        } else{
+          browserSupportFlag = false;
           self._handleNoGeolocation(browserSupportFlag);
-        });
-      }
-      // Browser doesn't support Geolocation
-      else {
-        browserSupportFlag = false;
-        self._handleNoGeolocation(browserSupportFlag);
-      }
-
-      self._handleNoGeolocation = function(errorFlag) {
-        if (errorFlag == true) {
-          alert("Geolocation service failed.");
-          oj.Logger.warn("Geolocation service failed.");
-        } else {
-          oj.Logger.warn("Browser doesn't support geolocation");
         }
-      };
+
+        self._handleNoGeolocation = function(errorFlag) {
+                if (errorFlag == true) {
+                  alert("Geolocation service failed.");
+                  oj.Logger.warn("Geolocation service failed.");
+                } else {
+                  oj.Logger.warn("Browser doesn't support geolocation");
+                }
+        };
+
+        self.addMarker = function(location){
+          var marker = new google.maps.Marker({
+            position: location,
+            map: map
+          });
+        }
 
       }
-      ko.bindingHandlers.incidentsMap = {
+
+
+      //Handler for the google map
+      ko.bindingHandlers.map = {
         init: function (element, valueAccessor, allBindingsAccessor, viewModel) {
-          alert("INIT");
-          var mapObj = ko.utils.unwrapObservable(valueAccessor());
+                var mapObj = ko.utils.unwrapObservable(valueAccessor());
+                var latLng = new google.maps.LatLng(
+                    ko.utils.unwrapObservable(mapObj.lat),
+                    ko.utils.unwrapObservable(mapObj.lng));
+                var mapOptions = { center: latLng,
+                                  zoom: 10,
+                                  mapTypeId: google.maps.MapTypeId.ROADMAP};
 
-          /* Oracle mapViewer code start */
-          OM.gv.setLogLevel('severe');
+                mapObj.googleMap = new google.maps.Map(element, mapOptions);
 
-          OM.gv.setResourcePath("https://elocation.oracle.com/mapviewer/jslib/v2.1");
-          mapObj.map = new OM.Map(element, {mapviewerURL: ''}) ;
-          var tileLayer = new OM.layer.OSMTileLayer("layer1");
-          mapObj.map.addLayer(tileLayer);
-          var markerLayer = new OM.layer.MarkerLayer("markerlayer1");
-          markerLayer.setBoundingTheme(true);
-          mapObj.map.addLayer(markerLayer);
+                mapObj.marker = new google.maps.Marker({
+                    map: mapObj.googleMap,
+                    position: latLng,
+                    title: "You Are Here",
+                    draggable: true
+                });
 
+                mapObj.onChangedCoord = function(newValue) {
+                    var latLng = new google.maps.LatLng(
+                        ko.utils.unwrapObservable(mapObj.lat),
+                        ko.utils.unwrapObservable(mapObj.lng));
+                    mapObj.googleMap.setCenter(latLng);
+                };
 
-          var vMarker = new OM.style.Marker({
-            src: "css/images/alta_map_pin_red.png",
-            width: 17,
-            height: 36,
-            lengthUnit: 'pixel'
-          });
+                mapObj.onMarkerMoved = function(dragEnd) {
+                    var latLng = mapObj.marker.getPosition();
+                    mapObj.lat(latLng.lat());
+                    mapObj.lng(latLng.lng());
+                };
 
-          mapObj.incidents().forEach(function(incident, index){
+                mapObj.lat.subscribe(mapObj.onChangedCoord);
+                mapObj.lng.subscribe(mapObj.onChangedCoord);
 
-            var mm = new OM.MapMarker();
-            markerLayer.addMapMarker(mm);
-            //mm.setPosition(incident.location.longitude, incident.location.latitude);
-            mm.setPosition(11.2604426, 43.7772631);
-            mm.setDraggable(false);
-            mm.setStyle(vMarker);
-            //mm.setID(incident.id);
-            //mm.on('click', function() {
-            //  app.goToIncident(mm.getID(), 'tabmap');
-            //})
-          });
+                google.maps.event.addListener(mapObj.marker, 'dragend', mapObj.onMarkerMoved);
 
-          markerLayer.zoomToTheme();
-          mapObj.map.init();
-          /* Oracle mapViewer code end */
-
-          /** Google Maps
-           * To render the incidents map view and markers using Google Maps API:
-           * 1. Uncomment the Google Maps script tag in index.html
-           * 1. Comment out the above code block of Oracle mapViewer
-           * 2. Uncomment the following code for Goolge Maps
-           */
-
-          /* Google Maps code start */
-          // if (!(typeof google === 'object' && typeof google.maps === 'object')) {
-          //   oj.Logger.error('Google Maps API not available.')
-          // }
-
-          // var latLng = new google.maps.LatLng(
-          //     ko.utils.unwrapObservable(mapObj.lat),
-          //     ko.utils.unwrapObservable(mapObj.lng));
-
-          // var mapOptions = {
-          //   zoom: 8,
-          //   mapTypeId: google.maps.MapTypeId.ROADMAP,
-          //   mapTypeControl: false,
-          //   streetViewControl: false
-          // };
-
-          // mapObj.googleMap = new google.maps.Map(element, mapOptions);
-
-          // var bounds = new google.maps.LatLngBounds();
-
-          // var icon = {
-          //   url: "css/images/alta_map_pin_red.png", // url
-          //   scaledSize: new google.maps.Size(17, 36), // scaled size
-          //   origin: new google.maps.Point(0, 0), // origin
-          //   anchor: new google.maps.Point(0, 0) // anchor
-          // };
-
-          // mapObj.incidents().forEach(function(incident){
-          //   var latLng = new google.maps.LatLng(incident.location.latitude, incident.location.longitude);
-
-          //   bounds.extend(latLng);
-
-          //   var marker = new google.maps.Marker({
-          //     position: latLng,
-          //     map: mapObj.googleMap,
-          //     title: "Incident",
-          //     draggable: false,
-          //     icon: icon
-          //   });
-
-          // })
-
-          // mapObj.googleMap.fitBounds(bounds);
-
-          /* Google Maps code end */
-
-          $("#" + element.getAttribute("id")).data("mapObj",mapObj);
-        }
+                $("#" + element.getAttribute("id")).data("mapObj",mapObj);
+              }
       };
 
     return DashboardViewModel;

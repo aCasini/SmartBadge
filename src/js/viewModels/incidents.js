@@ -7,69 +7,109 @@
  */
 define(['ojs/ojcore', 'knockout', 'jquery', 'appController'],
  function(oj, ko, $, app) {
-  
+
     function IncidentsViewModel() {
       var self = this;
 
       // Header Config
       self.headerConfig = {'viewName': 'header', 'viewModelFactory': app.getHeaderModel()};
-      
-      // Below are a subset of the ViewModel methods invoked by the ojModule binding
-      // Please reference the ojModule jsDoc for additionaly available methods.
 
-      /**
-       * Optional ViewModel method invoked when this ViewModel is about to be
-       * used for the View transition.  The application can put data fetch logic
-       * here that can return a Promise which will delay the handleAttached function
-       * call below until the Promise is resolved.
-       * @param {Object} info - An object with the following key-value pairs:
-       * @param {Node} info.element - DOM element or where the binding is attached. This may be a 'virtual' element (comment node).
-       * @param {Function} info.valueAccessor - The binding's value accessor.
-       * @return {Promise|undefined} - If the callback returns a Promise, the next phase (attaching DOM) will be delayed until
-       * the promise is resolved
-       */
-      self.handleActivated = function(info) {
-        // Implement if needed
+      self.mapOne = ko.observable({
+          lat: ko.observable(0),
+          lng:ko.observable(0)
+      });
+
+
+      var browserSupportFlag;
+      if(navigator.geolocation){
+        browserSupportFlag = true;
+
+        //retrieval the current position
+        navigator.geolocation.getCurrentPosition(function(position){
+          var lat = position.coords.latitude;
+          var lng = position.coords.longitude;
+          var timestamp = position.timestamp;
+          console.log("Latitude: "+lat);
+          console.log("Longitude: "+lng);
+          console.log("Timestamp: "+timestamp);
+
+          self.mapOne().lat(lat);
+          self.mapOne().lng(lng);
+
+          var latLng = new google.maps.LatLng(lat,lng);
+
+          //alert("PRE: "+ self.mapOne().marker.position);
+
+
+          self.mapOne().marker.setPosition(latLng);
+
+          //alert("POST: "+ self.mapOne().marker.position);
+        }, function(){
+          self._handleNoGeolocation(browserSupportFlag);
+        });
+      } else{
+        browserSupportFlag = false;
+        self._handleNoGeolocation(browserSupportFlag);
+      }
+
+      self._handleNoGeolocation = function(errorFlag) {
+              if (errorFlag == true) {
+                alert("Geolocation service failed.");
+                oj.Logger.warn("Geolocation service failed.");
+              } else {
+                oj.Logger.warn("Browser doesn't support geolocation");
+              }
       };
 
-      /**
-       * Optional ViewModel method invoked after the View is inserted into the
-       * document DOM.  The application can put logic that requires the DOM being
-       * attached here.
-       * @param {Object} info - An object with the following key-value pairs:
-       * @param {Node} info.element - DOM element or where the binding is attached. This may be a 'virtual' element (comment node).
-       * @param {Function} info.valueAccessor - The binding's value accessor.
-       * @param {boolean} info.fromCache - A boolean indicating whether the module was retrieved from cache.
-       */
-      self.handleAttached = function(info) {
-        // Implement if needed
-      };
+      self.addMarker = function(location){
+        var marker = new google.maps.Marker({
+          position: location,
+          map: map
+        });
+      }
 
-
-      /**
-       * Optional ViewModel method invoked after the bindings are applied on this View. 
-       * If the current View is retrieved from cache, the bindings will not be re-applied
-       * and this callback will not be invoked.
-       * @param {Object} info - An object with the following key-value pairs:
-       * @param {Node} info.element - DOM element or where the binding is attached. This may be a 'virtual' element (comment node).
-       * @param {Function} info.valueAccessor - The binding's value accessor.
-       */
-      self.handleBindingsApplied = function(info) {
-        // Implement if needed
-      };
-
-      /*
-       * Optional ViewModel method invoked after the View is removed from the
-       * document DOM.
-       * @param {Object} info - An object with the following key-value pairs:
-       * @param {Node} info.element - DOM element or where the binding is attached. This may be a 'virtual' element (comment node).
-       * @param {Function} info.valueAccessor - The binding's value accessor.
-       * @param {Array} info.cachedNodes - An Array containing cached nodes for the View if the cache is enabled.
-       */
-      self.handleDetached = function(info) {
-        // Implement if needed
-      };
     }
+
+    ko.bindingHandlers.map = {
+      init: function (element, valueAccessor, allBindingsAccessor, viewModel) {
+              var mapObj = ko.utils.unwrapObservable(valueAccessor());
+              var latLng = new google.maps.LatLng(
+                  ko.utils.unwrapObservable(mapObj.lat),
+                  ko.utils.unwrapObservable(mapObj.lng));
+              var mapOptions = { center: latLng,
+                                zoom: 10,
+                                mapTypeId: google.maps.MapTypeId.ROADMAP};
+
+              mapObj.googleMap = new google.maps.Map(element, mapOptions);
+
+              mapObj.marker = new google.maps.Marker({
+                  map: mapObj.googleMap,
+                  position: latLng,
+                  title: "You Are Here",
+                  draggable: true
+              });
+
+              mapObj.onChangedCoord = function(newValue) {
+                  var latLng = new google.maps.LatLng(
+                      ko.utils.unwrapObservable(mapObj.lat),
+                      ko.utils.unwrapObservable(mapObj.lng));
+                  mapObj.googleMap.setCenter(latLng);
+              };
+
+              mapObj.onMarkerMoved = function(dragEnd) {
+                  var latLng = mapObj.marker.getPosition();
+                  mapObj.lat(latLng.lat());
+                  mapObj.lng(latLng.lng());
+              };
+
+              mapObj.lat.subscribe(mapObj.onChangedCoord);
+              mapObj.lng.subscribe(mapObj.onChangedCoord);
+
+              google.maps.event.addListener(mapObj.marker, 'dragend', mapObj.onMarkerMoved);
+
+              $("#" + element.getAttribute("id")).data("mapObj",mapObj);
+            }
+    };
 
     /*
      * Returns a constructor for the ViewModel so that the ViewModel is constrcuted
