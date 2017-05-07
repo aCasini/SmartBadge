@@ -55,9 +55,21 @@
                   title:address
               });
 
+
               // To add the marker to the map, call setMap();
               console.log("Added the marker for "+address);
               markerTimeZone.setMap(self.mapOne().googleMap);
+              // Add the circle for this city to the map.
+              var cityCircle = new google.maps.Circle({
+                strokeColor: '#FF0000',
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: '#FF0000',
+                fillOpacity: 0.35,
+                map: self.mapOne().googleMap,
+                center: {lat: lat, lng: long},
+                radius: 120
+              });
             }
 
             console.log('Registering Notifications Success: ', response);
