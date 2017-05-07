@@ -5,8 +5,18 @@
 /*
  * Your incidents ViewModel code goes here
  */
-define(['ojs/ojcore', 'knockout', 'jquery', 'appController'],
- function(oj, ko, $, app) {
+ 'use strict';
+ define(['ojs/ojcore', 'knockout',
+         'jquery', 'appController',
+         'ojs/ojrouter',
+         'ojs/ojknockout',
+         'ojs/ojcheckboxset',
+         'ojs/ojinputtext',
+         'ojs/ojbutton',
+         'ojs/ojanimation',
+         'ojs/ojdialog',
+         'dataService'
+       ], function(oj, ko, $, app, data) {
 
     function IncidentsViewModel() {
       var self = this;
@@ -19,7 +29,44 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'appController'],
           lng:ko.observable(0)
       });
 
+      self.numeroCausale = ko.observable();
 
+      var data = require("dataService");
+//***********
+      data.getSmartBadgeTimeZones()
+        .then(function (response) {
+          if(typeof(response.errorMessage) != "undefined"){
+            alert("ERROR: "+response.errorMessage);
+            console.log("ERROR: "+response.errorMessage);
+          }else{
+
+            for(var i=0; i<response.Count; i++) {
+              //alert("address : "+ response.Items[i].address);
+              var address = response.Items[i].address;
+              //alert("lat : "+ response.Items[i].lat);
+              var lat = response.Items[i].lat;
+              //alert("lng : "+ response.Items[i].long);
+              var long = response.Items[i].long;
+
+              var timeZoneLatlng = new google.maps.LatLng(lat,long);
+
+              var markerTimeZone = new google.maps.Marker({
+                  position: timeZoneLatlng,
+                  title:address
+              });
+
+              // To add the marker to the map, call setMap();
+              console.log("Added the marker for "+address);
+              markerTimeZone.setMap(self.mapOne().googleMap);
+            }
+
+            console.log('Registering Notifications Success: ', response);
+          }
+        }).fail(function (response) {
+          alert("ERROR_: "+response.errorMessage);
+          console.error('Registering Notifications Fail: ', response);
+        })
+//***********
       var browserSupportFlag;
       if(navigator.geolocation){
         browserSupportFlag = true;
@@ -37,13 +84,8 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'appController'],
           self.mapOne().lng(lng);
 
           var latLng = new google.maps.LatLng(lat,lng);
-
-          //alert("PRE: "+ self.mapOne().marker.position);
-
-
           self.mapOne().marker.setPosition(latLng);
 
-          //alert("POST: "+ self.mapOne().marker.position);
         }, function(){
           self._handleNoGeolocation(browserSupportFlag);
         });
@@ -61,12 +103,7 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'appController'],
               }
       };
 
-      self.addMarker = function(location){
-        var marker = new google.maps.Marker({
-          position: location,
-          map: map
-        });
-      }
+
 
     }
 
@@ -77,7 +114,7 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'appController'],
                   ko.utils.unwrapObservable(mapObj.lat),
                   ko.utils.unwrapObservable(mapObj.lng));
               var mapOptions = { center: latLng,
-                                zoom: 10,
+                                zoom: 15,
                                 mapTypeId: google.maps.MapTypeId.ROADMAP};
 
               mapObj.googleMap = new google.maps.Map(element, mapOptions);
@@ -86,7 +123,7 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'appController'],
                   map: mapObj.googleMap,
                   position: latLng,
                   title: "You Are Here",
-                  draggable: true
+                  draggable: false
               });
 
               mapObj.onChangedCoord = function(newValue) {

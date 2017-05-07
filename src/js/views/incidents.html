@@ -16,14 +16,101 @@
   <div class="oj-applayout-content">
     <div role="main" class="oj-hybrid-applayout-content">
       <div class="oj-hybrid-padding">
-        <h3>Incidents Content Area</h3>
-        <div>
-            To change the content of this section, you will make edits to the incidents.html file located in the /js/views folder.
-        </div>
-        <div id="map1Div" data-bind="style:{width:'300px',height:'300px'},map:mapOne"></div>
+
+        <div id="map1Div" style="float: center; width: 300px; height: 200px;"  data-bind="map:mapOne"></div>
+        <!--
         <input data-bind="value: mapOne().lat" />
         <input data-bind="value: mapOne().lng" />
+        -->
+
       </div>
+
+      <div id="main-wrapper-ID">
+        <div id="first-wrapper-ID">
+          <!-- START DIV -->
+          <div id="start-wrapper-ID"
+              class="demo-signin-form-container oj-hybrid-padding"
+              style="float: left;">
+            <button id="button-startEvent-ID"
+                    class="demo-signin-button oj-hybrid-padding-horizontal"
+                    data-bind="
+                               ojComponent:
+                                {
+                                  component: 'ojButton',
+                                  label: 'Start',
+                                  chroming: 'full'
+                                }">
+            </button>
+          </div>
+          <!-- END DIV -->
+          <div id="end-wrapper-ID" style="float: right;"
+              class="demo-signin-form-container oj-hybrid-padding"
+              style="float: left;">
+            <button id="button-endEvent-ID"
+                    class="demo-signin-button oj-hybrid-padding-horizontal"
+                    data-bind="
+                               ojComponent:
+                                {
+                                  component: 'ojButton',
+                                  label: 'End ',
+                                  chroming: 'full'
+                                }">
+            </button>
+          </div>
+        </div>
+
+        <div id="second-wrapper-ID">
+          <!-- START BREAK DIV -->
+          <div id="startBreak-wrapper-ID" style="float: left;"
+              class="demo-signin-form-container oj-hybrid-padding"
+              style="float: left;">
+            <button id="button-startBreakEvent-ID"
+                    class="demo-signin-button oj-hybrid-padding-horizontal"
+                    data-bind="
+                               ojComponent:
+                                {
+                                  component: 'ojButton',
+                                  label: 'Start Break',
+                                  chroming: 'full'
+                                }">
+            </button>
+          </div>
+          <!-- END BREAK DIV -->
+          <div id="endBreak-wrapper-ID" style="float: right;"
+              class="demo-signin-form-container oj-hybrid-padding"
+              style="float: left;">
+            <button id="button-endBreakEvent-ID"
+                    class="demo-signin-button oj-hybrid-padding-horizontal"
+                    data-bind="
+                               ojComponent:
+                                {
+                                  component: 'ojButton',
+                                  label: 'End Break ',
+                                  chroming: 'full'
+                                }">
+            </button>
+          </div>
+        </div>
+        <div id="causale-wrapper-ID" class="demo-signin-form-container oj-hybrid-padding">
+            <input id="input-causale-ID"
+                   placeholder="Numero Causale"
+                   autocapitalize=off
+                   aria-label="Numero Causale"
+                   data-bind="ojComponent:
+                                {
+                                    component: 'ojInputText',
+                                    value: numeroCausale,
+                                    required: true
+                                  }">
+                                <!--
+         <span style="color: #e46c6e;"
+               id="userErrorMsg"
+               data-bind="text: errorMessage">
+         </span>
+       -->
+        </div>
+      </div>
+
     </div>
   </div>
 </div>

@@ -141,6 +141,33 @@ define(['ojs/ojcore',
           window.plugins.spinnerDialog.hide();
         })
       }
+      //********************
+      self.getSmartBadgeTimeZones = function(){
+        //window.plugins.spinnerDialog.show();
+        console.log("Call the AWS Cognito Change Retrieval the timeZones");
+
+        data.getSmartBadgeTimeZones()
+          .then(function (response) {
+            if(typeof(response.errorMessage) != "undefined"){
+              alert("ERROR: "+response.errorMessage);
+              console.log("ERROR: "+response.errorMessage);
+            }else{
+              alert("Response: "+response);
+              //test(response);
+              console.log('Registering Notifications Success: ', response);
+              responceAPI = response;
+            }
+            // Show spinner dialog
+            //window.plugins.spinnerDialog.hide();
+          }).fail(function (response) {
+            responceAPI = response;
+            alert("ERROR: "+response.errorMessage);
+            //alert(JSON.stringify(response.errorMessage));
+            console.error('Registering Notifications Fail: ', response);
+            //window.plugins.spinnerDialog.hide();
+          })
+
+      }
 
       //********************
 

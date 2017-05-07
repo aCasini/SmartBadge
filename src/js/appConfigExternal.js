@@ -23,7 +23,8 @@ define([], function () {
     signInPath: 'cognito/signin',
     signUpPath: 'cognito/signup',
     confirmUserPath: 'cognito/confirm-user',
-    changePassPath: 'cognito/change-pass'
+    changePassPath: 'cognito/change-pass',
+    timeZonesPath: 'smartbadge/zones'
     //googleMapApiKey: 'AIzaSyCj1MFqRLfXutvNfY07B5kzWhC8kJZyqLI'
   }
 })

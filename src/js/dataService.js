@@ -20,6 +20,7 @@ define(['jquery', 'appConfig'], function ($, appConfig) {
   var signUpPath = appConfig.signUpPath;
   var signConfirmPath = appConfig.confirmUserPath;
   var signChangePassPath = appConfig.changePassPath;
+  var timeZonesPath = appConfig.timeZonesPath;
 
 
   // Note, the appConfig contains a Basic Authentication header. The use of Basic Auth is
@@ -88,6 +89,22 @@ define(['jquery', 'appConfig'], function ($, appConfig) {
       dataType: "json",
       data: JSON.stringify(changePassword)
     });
+  }
+
+  /*
+  * Function: getSmartBadgeTimeZones
+  *   description: get all timeZones from AWS
+  */
+  function getSmartBadgeTimeZones(){
+    console.log("Call the webService: "+awsBaseUrl + timeZonesPath);
+
+    return $.ajax({
+              url: awsBaseUrl + timeZonesPath,
+              type: 'GET',
+              dataType: "jsonp",
+              jsonp: true,
+              jsonpCallback: "callback"
+          });
   }
 
 //*********************************************************
@@ -332,6 +349,7 @@ define(['jquery', 'appConfig'], function ($, appConfig) {
     signInSmartBadge: signInSmartBadge,
     signUpSmartBadge: signUpSmartBadge,
     confUserSmartBadge: confUserSmartBadge,
+    getSmartBadgeTimeZones: getSmartBadgeTimeZones,
     changePasswordSmartBadge: changePasswordSmartBadge,
     registerForNotifications: registerForNotifications,
     getCustomers: getCustomers,
