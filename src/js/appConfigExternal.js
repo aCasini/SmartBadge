@@ -24,7 +24,8 @@ define([], function () {
     signUpPath: 'cognito/signup',
     confirmUserPath: 'cognito/confirm-user',
     changePassPath: 'cognito/change-pass',
-    timeZonesPath: 'smartbadge/zones'
+    timeZonesPath: 'smartbadge/zones',
+    timeEventPath: 'smartbadge/event'
     //googleMapApiKey: 'AIzaSyCj1MFqRLfXutvNfY07B5kzWhC8kJZyqLI'
   }
 })

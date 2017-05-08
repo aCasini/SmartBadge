@@ -141,7 +141,37 @@ define(['ojs/ojcore',
           window.plugins.spinnerDialog.hide();
         })
       }
+
+      /*
+      * Function : call the AWs APIs for Cognito SignUp user
+      */
+      self.smartBadgeAddEvent = function (smartEvent) {
+
+        //window.plugins.spinnerDialog.show();
+        console.log("Call the AWS add Smart Event API");
+        alert("Call the AWS add Smart Event API: "+data);
+
+        data.smartBadgeAddEvent(smartEvent).then(function (response) {
+          if(typeof(response.errorMessage) != "undefined"){
+            alert("ERROR: "+response.errorMessage);
+            console.log("ERROR: "+response.errorMessage);
+          }else{
+            alert("SUCCESS");
+            console.log('Registering Notifications Success: ', response);
+          }
+          // Show spinner dialog
+          //window.plugins.spinnerDialog.hide();
+        }).fail(function (response) {
+          alert("ERROR: "+response.errorMessage);
+          //alert(JSON.stringify(response.errorMessage));
+          console.error('Registering Notifications Fail: ', response);
+          //window.plugins.spinnerDialog.hide();
+        })
+      }
+
+
       //********************
+
       self.getSmartBadgeTimeZones = function(){
         //window.plugins.spinnerDialog.show();
         console.log("Call the AWS Cognito Change Retrieval the timeZones");
@@ -165,9 +195,12 @@ define(['ojs/ojcore',
             //alert(JSON.stringify(response.errorMessage));
             console.error('Registering Notifications Fail: ', response);
             //window.plugins.spinnerDialog.hide();
-          })
+          });
+        }
 
-      }
+
+
+
 
       //********************
 

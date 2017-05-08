@@ -20,7 +20,7 @@
 
     function DashboardViewModel() {
       var self = this;
-
+      var addressoUser;
       // Header Config
       self.headerConfig = {'viewName': 'header', 'viewModelFactory': app.getHeaderModel()};
 
@@ -41,15 +41,10 @@
           }else{
 
             for(var i=0; i<response.Count; i++) {
-              //alert("address : "+ response.Items[i].address);
-              var address = response.Items[i].address;
-              //alert("lat : "+ response.Items[i].lat);
-              var lat = response.Items[i].lat;
-              //alert("lng : "+ response.Items[i].long);
-              var long = response.Items[i].long;
-              var imageUrl = response.Items[i].icon;
-              //alert(imageUrl);
-
+              var address     = response.Items[i].address;
+              var lat         = response.Items[i].lat;
+              var long        = response.Items[i].long;
+              var imageUrl    = response.Items[i].icon;
 
 
               var timeZoneLatlng = new google.maps.LatLng(lat,long);
@@ -96,9 +91,9 @@
 
         //retrieval the current position
         navigator.geolocation.getCurrentPosition(function(position){
-          var lat = position.coords.latitude;
-          var lng = position.coords.longitude;
-          var timestamp = position.timestamp;
+          var lat           = position.coords.latitude;
+          var lng           = position.coords.longitude;
+          var timestamp     = position.timestamp;
           console.log("Latitude: "+lat);
           console.log("Longitude: "+lng);
           console.log("Timestamp: "+timestamp);
@@ -108,6 +103,22 @@
 
           var latLng = new google.maps.LatLng(lat,lng);
           self.mapOne().marker.setPosition(latLng);
+
+          var reverseGeocoder = new google.maps.Geocoder();
+          reverseGeocoder.geocode({'latLng': latLng}, function(results, status) {
+                  if (status == google.maps.GeocoderStatus.OK) {
+                          if (results[0]) {
+                            addressoUser = results[0].formatted_address;
+                          }
+                  else {
+                          //navigator.notification.alert('Unable to detect your address.');
+                          alert('Unable to detect your address.');
+                          }
+              } else {
+                  //navigator.notification.alert('Unable to detect your address.');
+                  alert('Unable to detect your address.');
+              }
+          });
 
         }, function(){
           self._handleNoGeolocation(browserSupportFlag);
@@ -126,6 +137,61 @@
               }
       };
 
+      //SMARTBADGE add a new EVENT
+      self.startSmartBadge = function(){
+
+
+        navigator.geolocation.getCurrentPosition(function(position){
+          //window.plugins.spinnerDialog.show();
+
+          var type        = "IN";
+          var userName    = window.localStorage.getItem("userName");
+          var lat         = position.coords.latitude;
+          var lng         = position.coords.longitude;
+          var timestamp   = position.timestamp;
+          var date        = new Date();
+          var hour        = date.getHours();
+          var minutes     = date.getMinutes();
+          var seconds     = date.getSeconds();
+          var day         = date.getDate();
+          var month       = date.getMonth();
+          var year        = date.getFullYear();
+          var note        = "empty";
+          var address     = addressoUser;
+
+          console.log("Timbrature IN for " + userName + " at Time: "+ timestamp + " - Position( " + lat + " , " + lng + " ) - Location: "+address);
+          alert("Timbrature IN for "+userName+ " at Time: "+ timestamp + " - Position( "+lat + " , " +lng + " ) - Location: "+address);
+          console.log("Latitude: "+lat);
+          console.log("Longitude: "+lng);
+          console.log("Timestamp: "+timestamp);
+
+          var smartEvent = {
+            "userName": userName,
+            "eTimestamp": timestamp,
+            "address": address,
+            "eDay": day,
+            "eHour": hour,
+            "eLat": lat,
+            "eLon": lng,
+            "eMinute": minutes,
+            "eMonth": month+1,
+            "eSeconds": seconds,
+            "eType": type,
+            "eYear": year,
+            "notes": note
+          }
+
+          app.smartBadgeAddEvent(smartEvent);
+
+          //alert("Start for "+userName + " at "+timestamp);
+          //TODO: implemetare Haversine per controllare che la zona di timbratora sia valida
+
+          //window.plugins.spinnerDialog.show();
+        }, function(){
+          self._handleNoGeolocation(browserSupportFlag);
+        });
+
+      }
 
 
     }

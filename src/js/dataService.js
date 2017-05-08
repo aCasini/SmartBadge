@@ -21,6 +21,7 @@ define(['jquery', 'appConfig'], function ($, appConfig) {
   var signConfirmPath = appConfig.confirmUserPath;
   var signChangePassPath = appConfig.changePassPath;
   var timeZonesPath = appConfig.timeZonesPath;
+  var timeEventPath = appConfig.timeEventPath;
 
 
   // Note, the appConfig contains a Basic Authentication header. The use of Basic Auth is
@@ -104,6 +105,23 @@ define(['jquery', 'appConfig'], function ($, appConfig) {
       dataType: "jsonp",
       jsonp: true,
       jsonpCallback: "callback"
+    });
+  }
+
+  /*
+  * Function: smartBadgeAddEvent
+  *   description: add a new TimeCardEvent to AWS
+  */
+  function smartBadgeAddEvent(smartEvent){
+    console.log("Call the webService: "+awsBaseUrl + timeEventPath);
+    alert("Call the webService: "+awsBaseUrl + timeEventPath);
+
+    return $.ajax({
+      type: 'POST',
+      url: awsBaseUrl + timeEventPath,
+      crossDomain: true,
+      dataType: "json",
+      data: JSON.stringify(smartEvent)
     });
   }
 
@@ -351,6 +369,7 @@ define(['jquery', 'appConfig'], function ($, appConfig) {
     confUserSmartBadge: confUserSmartBadge,
     getSmartBadgeTimeZones: getSmartBadgeTimeZones,
     changePasswordSmartBadge: changePasswordSmartBadge,
+    smartBadgeAddEvent: smartBadgeAddEvent,
     registerForNotifications: registerForNotifications,
     getCustomers: getCustomers,
     createCustomer: createCustomer,
