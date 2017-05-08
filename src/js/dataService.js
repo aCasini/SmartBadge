@@ -121,6 +121,10 @@ define(['jquery', 'appConfig'], function ($, appConfig) {
       url: awsBaseUrl + timeEventPath,
       crossDomain: true,
       dataType: "json",
+      headers: {
+        "Authorization": window.localStorage.getItem("accessToken"),
+        "Content-Type": "application/json"
+      },
       data: JSON.stringify(smartEvent)
     });
   }

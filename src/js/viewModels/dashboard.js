@@ -160,7 +160,7 @@
           var address     = addressoUser;
 
           console.log("Timbrature IN for " + userName + " at Time: "+ timestamp + " - Position( " + lat + " , " + lng + " ) - Location: "+address);
-          alert("Timbrature IN for "+userName+ " at Time: "+ timestamp + " - Position( "+lat + " , " +lng + " ) - Location: "+address);
+          //alert("Timbrature IN for "+userName+ " at Time: "+ timestamp + " - Position( "+lat + " , " +lng + " ) - Location: "+address);
           console.log("Latitude: "+lat);
           console.log("Longitude: "+lng);
           console.log("Timestamp: "+timestamp);
