@@ -99,12 +99,12 @@ define(['jquery', 'appConfig'], function ($, appConfig) {
     console.log("Call the webService: "+awsBaseUrl + timeZonesPath);
 
     return $.ajax({
-              url: awsBaseUrl + timeZonesPath,
-              type: 'GET',
-              dataType: "jsonp",
-              jsonp: true,
-              jsonpCallback: "callback"
-          });
+      url: awsBaseUrl + timeZonesPath,
+      type: 'GET',
+      dataType: "jsonp",
+      jsonp: true,
+      jsonpCallback: "callback"
+    });
   }
 
 //*********************************************************

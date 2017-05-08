@@ -179,8 +179,8 @@ define(['ojs/ojcore',
 
       self.router.configure({
        'signin': {label: 'Sign In'},
-       'dashboard': {label: 'Dashboard'},
-       'incidents': {label: 'Incidents', isDefault: true},
+       'dashboard': {label: 'Dashboard', isDefault: true},
+       'incidents': {label: 'Incidents'},
        'customers': {label: 'Customers'},
        'profile': {label: 'Profile'},
        'about': {label: 'About'}
