@@ -36,8 +36,9 @@
       data.getSmartBadgeTimeZones()
         .then(function (response) {
           if(typeof(response.errorMessage) != "undefined"){
-            alert("ERROR: "+response.errorMessage);
-            console.log("ERROR: "+response.errorMessage);
+            $( "#textInfo" ).text("ERROR: Something went wrong!");
+            $("#infoDialogDashboard" ).ojDialog("open");
+            console.error("ERROR: "+response.errorMessage);
           }else{
 
             for(var i=0; i<response.Count; i++) {
@@ -81,7 +82,9 @@
             console.log('Registering Notifications Success: ', response);
           }
         }).fail(function (response) {
-          alert("ERROR_: "+response.errorMessage);
+          $( "#textInfo" ).text("ERROR: "+ response.errorMessage);
+          $("#infoDialogDashboard" ).ojDialog("open");
+          console.error("ERROR_: "+response.errorMessage);
           console.error('Registering Notifications Fail: ', response);
         })
 //***********
@@ -112,11 +115,15 @@
                           }
                   else {
                           //navigator.notification.alert('Unable to detect your address.');
-                          alert('Unable to detect your address.');
-                          }
+                          $( "#textInfo" ).text("ERROR: Unable to detecte your address!");
+                          $("#infoDialogDashboard" ).ojDialog("open");
+                          console.log('Unable to detect your address.');
+                        }
               } else {
                   //navigator.notification.alert('Unable to detect your address.');
-                  alert('Unable to detect your address.');
+                  $( "#textInfo" ).text("ERROR: Unable to detect your address");
+                  $("#infoDialogDashboard" ).ojDialog("open");
+                  console.log('Unable to detect your address.');
               }
           });
 
@@ -130,7 +137,8 @@
 
       self._handleNoGeolocation = function(errorFlag) {
               if (errorFlag == true) {
-                alert("Geolocation service failed.");
+                $( "#textInfo" ).text("ERROR: Geolocation service failed!");
+                $("#infoDialogDashboard" ).ojDialog("open");
                 oj.Logger.warn("Geolocation service failed.");
               } else {
                 oj.Logger.warn("Browser doesn't support geolocation");
@@ -142,31 +150,31 @@
 
 
         navigator.geolocation.getCurrentPosition(function(position){
-          //window.plugins.spinnerDialog.show();
-
-          var type        = "IN";
+alert(addressoUser);
+          var type        = $("#button-startEvent-ID").val();
           var userName    = window.localStorage.getItem("userName");
           var lat         = position.coords.latitude;
           var lng         = position.coords.longitude;
-          var timestamp   = position.timestamp;
+          var timestamp   = + new Date();
           var date        = new Date();
           var hour        = date.getHours();
           var minutes     = date.getMinutes();
           var seconds     = date.getSeconds();
           var day         = date.getDate();
-          var month       = date.getMonth();
+          var month       = date.getMonth()+1;
           var year        = date.getFullYear();
           var note        = "empty";
           var address     = addressoUser;
 
+          alert("The Time is.. "+ typeof timestamp);
           console.log("Timbrature IN for " + userName + " at Time: "+ timestamp + " - Position( " + lat + " , " + lng + " ) - Location: "+address);
           //alert("Timbrature IN for "+userName+ " at Time: "+ timestamp + " - Position( "+lat + " , " +lng + " ) - Location: "+address);
           console.log("Latitude: "+lat);
           console.log("Longitude: "+lng);
-          console.log("Timestamp: "+timestamp);
+          console.log("Timestamp: " + timestamp);
 
           var smartEvent = {
-            "userName": userName,
+            "userName": "acasini",
             "eTimestamp": timestamp,
             "address": address,
             "eDay": day,
@@ -174,7 +182,7 @@
             "eLat": lat,
             "eLon": lng,
             "eMinute": minutes,
-            "eMonth": month+1,
+            "eMonth": month,
             "eSeconds": seconds,
             "eType": type,
             "eYear": year,
@@ -186,13 +194,15 @@
           //alert("Start for "+userName + " at "+timestamp);
           //TODO: implemetare Haversine per controllare che la zona di timbratora sia valida
 
-          //window.plugins.spinnerDialog.show();
         }, function(){
           self._handleNoGeolocation(browserSupportFlag);
         });
 
       }
 
+      self.infoClose = function(){
+        $( "#infoDialogDashboard" ).ojDialog("close");
+      }
 
     }
 

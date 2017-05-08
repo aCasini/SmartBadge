@@ -12,16 +12,16 @@
 'use strict';
 define(['jquery', 'appConfig'], function ($, appConfig) {
 
-  var baseUrl = appConfig.backendUrl;
-  var registrationUrl = appConfig.registrationUrl;
+  var baseUrl               = appConfig.backendUrl;
+  var registrationUrl       = appConfig.registrationUrl;
   //AWS BaseURL:
-  var awsBaseUrl = appConfig.baseURL;
-  var signInPath = appConfig.signInPath;
-  var signUpPath = appConfig.signUpPath;
-  var signConfirmPath = appConfig.confirmUserPath;
-  var signChangePassPath = appConfig.changePassPath;
-  var timeZonesPath = appConfig.timeZonesPath;
-  var timeEventPath = appConfig.timeEventPath;
+  var awsBaseUrl            = appConfig.baseURL;
+  var signInPath            = appConfig.signInPath;
+  var signUpPath            = appConfig.signUpPath;
+  var signConfirmPath       = appConfig.confirmUserPath;
+  var signChangePassPath    = appConfig.changePassPath;
+  var timeZonesPath         = appConfig.timeZonesPath;
+  var timeEventPath         = appConfig.timeEventPath;
 
 
   // Note, the appConfig contains a Basic Authentication header. The use of Basic Auth is
@@ -114,15 +114,26 @@ define(['jquery', 'appConfig'], function ($, appConfig) {
   */
   function smartBadgeAddEvent(smartEvent){
     console.log("Call the webService: "+awsBaseUrl + timeEventPath);
-    alert("Call the webService: "+awsBaseUrl + timeEventPath);
-
+    alert(typeof smartEvent.userName);
+    alert(typeof smartEvent.eTimestamp);
+    alert(typeof smartEvent.address);
+    alert(typeof smartEvent.eDay);
+    alert(typeof smartEvent.eHour);
+    alert(typeof smartEvent.eLat);
+    alert(typeof smartEvent.eLon);
+    alert(typeof smartEvent.eMinute);
+    alert(typeof smartEvent.eMonth);
+    alert(typeof smartEvent.eSeconds);
+    alert(typeof smartEvent.eType);
+    alert(typeof smartEvent.eYear);
+    alert(typeof smartEvent.notes);
     return $.ajax({
       type: 'POST',
       url: awsBaseUrl + timeEventPath,
       crossDomain: true,
       dataType: "json",
       headers: {
-        "Authorization": window.localStorage.getItem("accessToken"),
+        "Authorization": "eyJraWQiOiIwUmZ3bWpUdlhDU2hZQk42Z2hIdzMrV1pRNTE1dlFRNUlKMk45OVp6ZnpZPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiIxOWI2YWUwNC01YWMwLTRlZTEtODk4Yi05Nzg5NDJiZmYyZmMiLCJ0b2tlbl91c2UiOiJhY2Nlc3MiLCJzY29wZSI6ImF3cy5jb2duaXRvLnNpZ25pbi51c2VyLmFkbWluIiwiaXNzIjoiaHR0cHM6XC9cL2NvZ25pdG8taWRwLmV1LXdlc3QtMS5hbWF6b25hd3MuY29tXC9ldS13ZXN0LTFfREJMUFlFWXI2IiwiZXhwIjoxNDk0Mjc1NTQyLCJpYXQiOjE0OTQyNzE5NDIsImp0aSI6IjU0Y2EzOWRlLTA0Y2MtNGRhMS05ZTgxLTdjMDNkYmYwMWVlNSIsImNsaWVudF9pZCI6ImxlMGdubWRzdGVtZmRxbWhqcjRtbWhudTUiLCJ1c2VybmFtZSI6ImFjYXNpbmkifQ.InNqrgQCvV_YrIag7VlmRoNIqbI_zAdcPB3yXPGkjescnHdCbkEQJ6LpWXLPvkJIP51xoM3nS5A0y63tor_nR6_OTYo_8R9MmQ5zASpOWvXcRZKFmRDBdyvxt4MJtRlCrT-Nmwvtz_jFZ8RLD4fUCg2wRa1UtCiP9MIod2X_bu_VNhTmQdtyzwlpU0aRZ7_0irQgWEh0l1hFQzAsoblU5RdmEQly7d5kzHH6KIogpSOWXkHyitdOAiQ6Vx8RDS099m2YZfic5KrJgNW8IF1_SFCXR9_duK8UwQEq668rMJEI_j8vGHSjWKY-RIRRZKBeeCPKnNcnGQsT54p-S6zzSQ",
         "Content-Type": "application/json"
       },
       data: JSON.stringify(smartEvent)

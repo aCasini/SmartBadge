@@ -23,8 +23,6 @@ define(['ojs/ojcore',
       //Load the dataModule by requireJS
       var data = require("dataService");
 
-//TODO:REMOVE ME
-window.localStorage.setItem("accessToken", "eyJraWQiOiIwUmZ3bWpUdlhDU2hZQk42Z2hIdzMrV1pRNTE1dlFRNUlKMk45OVp6ZnpZPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiIxOWI2YWUwNC01YWMwLTRlZTEtODk4Yi05Nzg5NDJiZmYyZmMiLCJ0b2tlbl91c2UiOiJhY2Nlc3MiLCJzY29wZSI6ImF3cy5jb2duaXRvLnNpZ25pbi51c2VyLmFkbWluIiwiaXNzIjoiaHR0cHM6XC9cL2NvZ25pdG8taWRwLmV1LXdlc3QtMS5hbWF6b25hd3MuY29tXC9ldS13ZXN0LTFfREJMUFlFWXI2IiwiZXhwIjoxNDk0MjUzMTIyLCJpYXQiOjE0OTQyNDk1MjIsImp0aSI6ImRjMDBjZTBiLTg4NjMtNDI5Ni05NWY2LTkyYjIzMDcxZTdiMCIsImNsaWVudF9pZCI6ImxlMGdubWRzdGVtZmRxbWhqcjRtbWhudTUiLCJ1c2VybmFtZSI6ImFjYXNpbmkifQ.GQx6FgOPIoxyAv23nsrHA-XY72Bk_ftvVkilXqWb9fXZXkKHVOZiOhc0Yn9ccXFCm1hz1wg8Wm3hX4qaOCviUm7UWhCeDva4_lGQjv0KnDu7oV_cEpUZbLxyxx-oS5FLkmT6GtQFA52UaQc4BToyc3PlyjaDQwonxnKLD4d63iD79_Gr5GmaVGKEqlejCjJ8yhNhhtau1wXvCiMtz0wHUF8zLJMB4lM4vnmVFaZEESxZR8ZcgrPchG9jfsJI8wqZqhOpKQjjNxcy3JvDxaYD5M0mgB02-3e7ownTH-0L7gyVOXwseUDxszZprJLJjvtbtxbcztpTGaeAWMYFQYJ20g");
 
       /*
       * Function : call the AWs APIs for Cognito SignIn user
@@ -41,8 +39,11 @@ window.localStorage.setItem("accessToken", "eyJraWQiOiIwUmZ3bWpUdlhDU2hZQk42Z2hI
           $('#navigationBarID').css('display','inline');
           window.plugins.spinnerDialog.hide();
 
-          sessionStorage.refreshToken=response.refreshToken.token;
-          sessionStorage.accessToken=response.accessToken.jwtToken;
+
+          //sessionStorage.refreshToken=response.refreshToken.token;
+          window.localStorage.setItem("refreshToken", response.refreshToken.token);
+          //sessionStorage.accessToken=response.accessToken.jwtToken;
+          window.localStorage.setItem("accessToken", response.accessToken.jwtToken);
 
 
 
@@ -153,20 +154,21 @@ window.localStorage.setItem("accessToken", "eyJraWQiOiIwUmZ3bWpUdlhDU2hZQk42Z2hI
       self.smartBadgeAddEvent = function (smartEvent) {
         //window.plugins.spinnerDialog.show();
         console.log("Call the AWS add Smart Event API");
-        alert(window.localStorage.getItem("accessToken"));
-
         data.smartBadgeAddEvent(smartEvent).then(function (response) {
           if(typeof(response.errorMessage) != "undefined"){
-            alert("ERROR: "+response.errorMessage);
+            $( "#textInfo" ).text("ERROR: something went wrong!");
+            $("#infoDialogDashboard" ).ojDialog("open");
             console.log("ERROR: "+response.errorMessage);
           }else{
-            alert("SUCCESS");
+            $( "#textInfo" ).text("TimeCard Event created with SUCCESS");
+            $("#infoDialogDashboard" ).ojDialog("open");
             console.log("TimeCard Event created with SUCCESS");
           }
           // Show spinner dialog
           //window.plugins.spinnerDialog.hide();
         }).fail(function (response) {
-          alert("ERROR: "+response.errorMessage);
+          $( "#textInfo" ).text("ERROR: something went wrong!");
+          $("#infoDialogDashboard" ).ojDialog("open");
           console.error('Registering Notifications Fail: ', response.errorMessage);
           //window.plugins.spinnerDialog.hide();
         })

@@ -32,6 +32,7 @@
               class="demo-signin-form-container oj-hybrid-padding"
               style="float: left;">
             <button id="button-startEvent-ID"
+                    value="IN"
                     class="demo-signin-button oj-hybrid-padding-horizontal"
                     data-bind="click: startSmartBadge,
                                ojComponent:
@@ -48,6 +49,7 @@
               style="float: left;">
             <button id="button-endEvent-ID"
                     class="demo-signin-button oj-hybrid-padding-horizontal"
+                    value="OUT"
                     data-bind="
                                ojComponent:
                                 {
@@ -66,6 +68,7 @@
               style="float: left;">
               <button id="button-startBreakEvent-ID"
                       class="demo-signin-button oj-hybrid-padding-horizontal"
+                      value="IN_1"
                       data-bind="
                                  ojComponent:
                                   {
@@ -81,6 +84,7 @@
               style="float: left;">
               <button id="button-endBreakEvent-ID"
                       class="demo-signin-button oj-hybrid-padding-horizontal"
+                      value="OUT_1"
                       data-bind="
                                  ojComponent:
                                   {
@@ -119,6 +123,27 @@
         </div>
         </div>
       </div>
+
+      <!-- START General INFO popup -->
+      <div id="infoDialogDashboard" class="ojDialog" title="ojDialog Title"
+        data-bind=  "ojComponent:{
+                        component: 'ojDialog',
+                        initialVisibility: 'hide'
+                        }">
+        <div class="oj-dialog-header" aria-labelledby="dialog-title-id">
+        <span id="dialog-confirm-title-id" class="oj-dialog-title"> Smart information</span>
+       </div>
+       <div class="oj-dialog-body">
+           <p id="textInfo"></p>
+           <br>
+       </div>
+       <div class="oj-dialog-footer">
+          <button data-bind="click: infoClose,
+                             ojComponent:{component: 'ojButton',label: 'OK'}"></button>
+
+       </div>
+      </div>
+      <!-- END General INFO popup -->
 
     </div>
   </div>
