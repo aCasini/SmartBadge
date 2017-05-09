@@ -43,10 +43,14 @@
                                 }">
             </button>
           </div>
+          <!-- CLOCK DIV -->
+          <div id="clock-wrapper-ID" style="float: left; margin-left: 7%; font-size: 2em;">
+            Clock
+          </div>
           <!-- END DIV -->
-          <div id="end-wrapper-ID" style="float: right;"
+          <div id="end-wrapper-ID"
               class="demo-signin-form-container oj-hybrid-padding"
-              style="float: left;">
+              style="float: right;">
             <button id="button-endEvent-ID"
                     class="demo-signin-button oj-hybrid-padding-horizontal"
                     value="OUT"
@@ -98,16 +102,19 @@
 
         <div id="causale-wrapper-ID"
             class="demo-signin-form-container oj-hybrid-padding">
-            <input id="input-causale-ID"
-                   placeholder="Numero Causale"
-                   autocapitalize=off
-                   aria-label="Numero Causale"
-                   data-bind="ojComponent:
-                                {
-                                    component: 'ojInputText',
-                                    value: numeroCausale,
-                                    required: true
-                                  }">
+
+                <input id="input-causale-ID"
+                       placeholder="Numero Causale"
+                       autocapitalize=off
+                       aria-label="Numero Causale"
+                       data-bind="ojComponent:
+                                    {
+                                        component: 'ojInputText',
+                                        value: numeroCausale,
+                                        required: true
+                                      }">
+
+
                                 <!--
          <span style="color: #e46c6e;"
                id="userErrorMsg"
