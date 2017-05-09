@@ -121,6 +121,26 @@
                data-bind="text: errorMessage">
          </span>
        -->
+       <!-- START General INFO popup -->
+         <div id="infoDialogDashboard" class="ojDialog" title="ojDialog Title"
+           data-bind=  "ojComponent:{
+                           component: 'ojDialog',
+                           initialVisibility: 'hide'
+                           }">
+             <div class="oj-dialog-header" aria-labelledby="dialog-title-id">
+               <span id="dialog-confirm-title-id" class="oj-dialog-title"> Smart information</span>
+             </div>
+            <div class="oj-dialog-body">
+                <p id="textInfo"></p>
+                <br>
+            </div>
+          <div class="oj-dialog-footer">
+             <button data-bind="click: infoClose,
+                                ojComponent:{component: 'ojButton',label: 'OK'}"></button>
+
+          </div>
+         </div>
+         <!-- END General INFO popup -->
         <div id="console-wrapper-ID"
           class="demo-signin-form-container oj-hybrid-padding">
           <label for="textarea-readOnly2"
@@ -133,27 +153,9 @@
         </div>
         </div>
       </div>
-
-      <!-- START General INFO popup -->
-      <div id="infoDialogDashboard" class="ojDialog" title="ojDialog Title"
-        data-bind=  "ojComponent:{
-                        component: 'ojDialog',
-                        initialVisibility: 'hide'
-                        }">
-        <div class="oj-dialog-header" aria-labelledby="dialog-title-id">
-        <span id="dialog-confirm-title-id" class="oj-dialog-title"> Smart information</span>
-       </div>
-       <div class="oj-dialog-body">
-           <p id="textInfo"></p>
-           <br>
-       </div>
-       <div class="oj-dialog-footer">
-          <button data-bind="click: infoClose,
-                             ojComponent:{component: 'ojButton',label: 'OK'}"></button>
-
-       </div>
       </div>
-      <!-- END General INFO popup -->
+
+
 
     </div>
   </div>

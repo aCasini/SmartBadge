@@ -36,8 +36,20 @@
 
       var data = require("dataService");
 
-
-
+      //Retrieval the currently SmartBadge Events for user Logged In
+      var currentDate = new Date();
+      var day = currentDate.getDay();
+      var month = currentDate.getMonth();
+      var year = currentDate.getFullYear();
+      var user = window.localStorage.getItem("userName");
+/*
+      data.getLastSmartBadgeEvents(user, day, month, year)
+        .then(function (response) {
+          alert("SUCCES getLastSmartBadgeEvents");
+      }).fail(function (error) {
+          alert("FAIL getLastSmartBadgeEvents");
+      })
+*/
       /**
       * Function getSmartBadgeTimeZones
       *   description: Call the API from dataservice in order to retrieval the TimeZones
@@ -163,6 +175,7 @@
 
       //SMARTBADGE add a new EVENT
       self.addSmartBadgeEvent = function(typeValue){
+
         var type = typeValue;
         //$("#textarea-smartBadgeEvents-ID").append(logEvent);
 

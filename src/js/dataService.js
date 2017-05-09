@@ -23,6 +23,7 @@ define(['jquery', 'appConfig'], function ($, appConfig) {
   var timeZonesPath         = appConfig.timeZonesPath;
   var timeEventPath         = appConfig.timeEventPath;
   var serverDatePath        = appConfig.serverDatePath;
+  var timeEventsPaths       = appConfig.timeEventsPaths;
 
 
   // Note, the appConfig contains a Basic Authentication header. The use of Basic Auth is
@@ -118,6 +119,24 @@ define(['jquery', 'appConfig'], function ($, appConfig) {
     //alert("Call the webService: "+awsBaseUrl + serverDatePath);
     return $.ajax({
       url: awsBaseUrl + serverDatePath,
+      type: 'GET',
+      dataType: "json",
+      crossDomain: true
+      //jsonp: true,
+      //jsonpCallback: "callback"
+    });
+  }
+
+  /*
+  * Function getLastSmartBadgeEvents
+  *   description: get the currently SmartBadge events for user loggedIn
+  */
+  function getLastSmartBadgeEvents(user, day, month, year){
+    var fullUrl = awsBaseUrl + timeEventsPaths+"?user="+user+"&day="+day+"&month="+month+"year="+year
+    console.log("Call the webService: "+fullUrl);
+    alert(fullUrl);
+    return $.ajax({
+      url: fullUrl,
       type: 'GET',
       dataType: "json",
       crossDomain: true
@@ -407,6 +426,7 @@ define(['jquery', 'appConfig'], function ($, appConfig) {
     getSmartBadgeTimeZones: getSmartBadgeTimeZones,
     changePasswordSmartBadge: changePasswordSmartBadge,
     smartBadgeAddEvent: smartBadgeAddEvent,
+    getLastSmartBadgeEvents: getLastSmartBadgeEvents,
     getServerCurrentDate: getServerCurrentDate,
     registerForNotifications: registerForNotifications,
     getCustomers: getCustomers,

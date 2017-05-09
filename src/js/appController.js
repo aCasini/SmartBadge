@@ -8,6 +8,7 @@
 
 define(['ojs/ojcore',
         'ojs/ojrouter',
+        'ojs/ojdialog',
         'ojs/ojarraytabledatasource',
         'ojs/ojmoduleanimations',
         'knockout',
@@ -152,25 +153,28 @@ define(['ojs/ojcore',
       * Function : call the AWs APIs for Cognito SignUp user
       */
       self.smartBadgeAddEvent = function (smartEvent) {
-        //window.plugins.spinnerDialog.show();
+        window.plugins.spinnerDialog.show();
+
         console.log("Call the AWS add Smart Event API");
         data.smartBadgeAddEvent(smartEvent).then(function (response) {
           if(typeof(response.errorMessage) != "undefined"){
+            window.plugins.spinnerDialog.hide();
             $( "#textInfo" ).text("ERROR: something went wrong!");
             $("#infoDialogDashboard" ).ojDialog("open");
             console.log("ERROR: "+response.errorMessage);
           }else{
+            window.plugins.spinnerDialog.hide();
             $( "#textInfo" ).text("TimeCard Event created with SUCCESS");
             $("#infoDialogDashboard" ).ojDialog("open");
             console.log("TimeCard Event created with SUCCESS");
           }
-          // Show spinner dialog
-          //window.plugins.spinnerDialog.hide();
+
+
         }).fail(function (response) {
+          window.plugins.spinnerDialog.hide();
           $( "#textInfo" ).text("ERROR: something went wrong!");
           $("#infoDialogDashboard" ).ojDialog("open");
           console.error('Registering Notifications Fail: ', response.errorMessage);
-          //window.plugins.spinnerDialog.hide();
         })
       }
 
@@ -216,8 +220,8 @@ define(['ojs/ojcore',
       self.router = oj.Router.rootInstance;
 
       self.router.configure({
-       'signin': {label: 'Sign In', isDefault: true},
-       'dashboard': {label: 'Dashboard'},
+       'signin': {label: 'Sign In'},
+       'dashboard': {label: 'Dashboard', isDefault: true},
        'incidents': {label: 'Incidents'},
        'customers': {label: 'Customers'},
        'profile': {label: 'Profile'},
