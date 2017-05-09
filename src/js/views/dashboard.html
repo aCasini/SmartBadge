@@ -124,9 +124,12 @@
         <div id="console-wrapper-ID"
           class="demo-signin-form-container oj-hybrid-padding">
           <label for="textarea-readOnly2"
-           class="oj-label-nocomp">Your Last Actions ...</label>
-          <textarea id="textarea-readOnly2" readonly
-                    class="oj-form-control oj-textarea-nocomp">Long Read Only</textarea>
+           class="oj-label-nocomp">Your Last SmartBadge Events ...</label>
+          <textarea id="textarea-smartBadgeEvents-ID" readonly
+                    data-bind="value: currentSmartEvents"
+                    rows=3
+                    style="margin: auto; width: 100%;"
+                    ></textarea>
         </div>
         </div>
       </div>

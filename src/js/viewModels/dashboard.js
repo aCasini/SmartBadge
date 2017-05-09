@@ -164,6 +164,7 @@
       //SMARTBADGE add a new EVENT
       self.addSmartBadgeEvent = function(typeValue){
         var type = typeValue;
+        //$("#textarea-smartBadgeEvents-ID").append(logEvent);
 
         if(isFakeGeolocation){
           alert("isFakegeolocation -->  "+isFakeGeolocation);
