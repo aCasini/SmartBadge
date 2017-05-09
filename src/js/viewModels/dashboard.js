@@ -159,11 +159,11 @@
               }
       };
 
+
+
       //SMARTBADGE add a new EVENT
-      self.startSmartBadge = function(){
-
-
-
+      self.addSmartBadgeEvent = function(typeValue){
+        var type = typeValue;
 
         if(isFakeGeolocation){
           alert("isFakegeolocation -->  "+isFakeGeolocation);
@@ -228,9 +228,7 @@
             data.getServerCurrentDate().then(function (response) {
               smartBadgeTimestamp = response.timestamp;
               console.log("Retrieval the SmartBadge Server time: "+response.timestamp);
-              alert("Retrieval the SmartBadge Server time: "+response.timestamp);
 
-              var type        = $("#button-startEvent-ID").val();
               var userName    = window.localStorage.getItem("userName");
               var lat         = position.coords.latitude;
               var lng         = position.coords.longitude;
@@ -244,7 +242,6 @@
               var note        = "empty";
               var address     = addressoUser;
 
-              alert("The Time is.. "+ typeof timestamp);
               console.log("Timbrature IN for " + userName + " at Time: "+ timestamp + " - Position( " + lat + " , " + lng + " ) - Location: "+address);
               //alert("Timbrature IN for "+userName+ " at Time: "+ timestamp + " - Position( "+lat + " , " +lng + " ) - Location: "+address);
               console.log("Latitude: "+lat);
@@ -276,11 +273,9 @@
 
           }, function(){
             self._handleNoGeolocation(browserSupportFlag);
+            console.error("ERROR: browser not support the geolocation");
           });
         }
-
-
-
 
 
       }

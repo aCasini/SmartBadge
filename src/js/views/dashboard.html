@@ -34,7 +34,7 @@
             <button id="button-startEvent-ID"
                     value="IN"
                     class="demo-signin-button oj-hybrid-padding-horizontal"
-                    data-bind="click: startSmartBadge,
+                    data-bind="click: addSmartBadgeEvent.bind($data,'IN'),
                                ojComponent:
                                 {
                                   component: 'ojButton',
@@ -54,7 +54,7 @@
             <button id="button-endEvent-ID"
                     class="demo-signin-button oj-hybrid-padding-horizontal"
                     value="OUT"
-                    data-bind="
+                    data-bind="click: addSmartBadgeEvent.bind($data,'OUT'),
                                ojComponent:
                                 {
                                   component: 'ojButton',
@@ -73,7 +73,7 @@
               <button id="button-startBreakEvent-ID"
                       class="demo-signin-button oj-hybrid-padding-horizontal"
                       value="IN_1"
-                      data-bind="
+                      data-bind="click: addSmartBadgeEvent.bind($data,'IN_1'),
                                  ojComponent:
                                   {
                                     component: 'ojButton',
@@ -89,7 +89,7 @@
               <button id="button-endBreakEvent-ID"
                       class="demo-signin-button oj-hybrid-padding-horizontal"
                       value="OUT_1"
-                      data-bind="
+                      data-bind="click: addSmartBadgeEvent.bind($data,'OUT_1'),
                                  ojComponent:
                                   {
                                     component: 'ojButton',
