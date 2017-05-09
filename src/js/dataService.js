@@ -22,6 +22,7 @@ define(['jquery', 'appConfig'], function ($, appConfig) {
   var signChangePassPath    = appConfig.changePassPath;
   var timeZonesPath         = appConfig.timeZonesPath;
   var timeEventPath         = appConfig.timeEventPath;
+  var serverDatePath        = appConfig.serverDatePath;
 
 
   // Note, the appConfig contains a Basic Authentication header. The use of Basic Auth is
@@ -109,31 +110,52 @@ define(['jquery', 'appConfig'], function ($, appConfig) {
   }
 
   /*
+  * Function getServerCurrentDate
+  *   description: retrieval the server smart badge current date
+  */
+  function getServerCurrentDate(){
+    console.log("Call the webService: "+awsBaseUrl + serverDatePath);
+    //alert("Call the webService: "+awsBaseUrl + serverDatePath);
+    return $.ajax({
+      url: awsBaseUrl + serverDatePath,
+      type: 'GET',
+      dataType: "json",
+      crossDomain: true
+      //jsonp: true,
+      //jsonpCallback: "callback"
+    });
+  }
+
+  /*
   * Function: smartBadgeAddEvent
   *   description: add a new TimeCardEvent to AWS
   */
   function smartBadgeAddEvent(smartEvent){
     console.log("Call the webService: "+awsBaseUrl + timeEventPath);
-    alert(typeof smartEvent.userName);
-    alert(typeof smartEvent.eTimestamp);
-    alert(typeof smartEvent.address);
-    alert(typeof smartEvent.eDay);
-    alert(typeof smartEvent.eHour);
-    alert(typeof smartEvent.eLat);
-    alert(typeof smartEvent.eLon);
-    alert(typeof smartEvent.eMinute);
-    alert(typeof smartEvent.eMonth);
-    alert(typeof smartEvent.eSeconds);
-    alert(typeof smartEvent.eType);
-    alert(typeof smartEvent.eYear);
-    alert(typeof smartEvent.notes);
+    /*
+    alert(typeof smartEvent.userName + " - " + smartEvent.userName );
+    alert(typeof smartEvent.eTimestamp + " - " +smartEvent.eTimestamp);
+    alert(typeof smartEvent.address+ " - " +smartEvent.address);
+    alert(typeof smartEvent.eDay + " - " + smartEvent.eDay);
+    alert(typeof smartEvent.eHour + " - " +smartEvent.eHour);
+    alert(typeof smartEvent.eLat + " - " +smartEvent.eLat);
+    alert(typeof smartEvent.eLon + " - " +smartEvent.eLon);
+    alert(typeof smartEvent.eMinute + " - " +smartEvent.eMinute);
+    alert(typeof smartEvent.eMonth + " - " +smartEvent.eMonth);
+    alert(typeof smartEvent.eSeconds + " - " +smartEvent.eSeconds);
+    alert(typeof smartEvent.eType + " - " +smartEvent.eType);
+    alert(typeof smartEvent.eYear + " - " +smartEvent.eYear);
+    alert(typeof smartEvent.notes + " - " +smartEvent.notes);
+    */
+    var accessToken = window.localStorage.getItem("accessToken");
+    //alert(accessToken);
     return $.ajax({
       type: 'POST',
       url: awsBaseUrl + timeEventPath,
       crossDomain: true,
       dataType: "json",
       headers: {
-        "Authorization": "eyJraWQiOiIwUmZ3bWpUdlhDU2hZQk42Z2hIdzMrV1pRNTE1dlFRNUlKMk45OVp6ZnpZPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiIxOWI2YWUwNC01YWMwLTRlZTEtODk4Yi05Nzg5NDJiZmYyZmMiLCJ0b2tlbl91c2UiOiJhY2Nlc3MiLCJzY29wZSI6ImF3cy5jb2duaXRvLnNpZ25pbi51c2VyLmFkbWluIiwiaXNzIjoiaHR0cHM6XC9cL2NvZ25pdG8taWRwLmV1LXdlc3QtMS5hbWF6b25hd3MuY29tXC9ldS13ZXN0LTFfREJMUFlFWXI2IiwiZXhwIjoxNDk0Mjc1NTQyLCJpYXQiOjE0OTQyNzE5NDIsImp0aSI6IjU0Y2EzOWRlLTA0Y2MtNGRhMS05ZTgxLTdjMDNkYmYwMWVlNSIsImNsaWVudF9pZCI6ImxlMGdubWRzdGVtZmRxbWhqcjRtbWhudTUiLCJ1c2VybmFtZSI6ImFjYXNpbmkifQ.InNqrgQCvV_YrIag7VlmRoNIqbI_zAdcPB3yXPGkjescnHdCbkEQJ6LpWXLPvkJIP51xoM3nS5A0y63tor_nR6_OTYo_8R9MmQ5zASpOWvXcRZKFmRDBdyvxt4MJtRlCrT-Nmwvtz_jFZ8RLD4fUCg2wRa1UtCiP9MIod2X_bu_VNhTmQdtyzwlpU0aRZ7_0irQgWEh0l1hFQzAsoblU5RdmEQly7d5kzHH6KIogpSOWXkHyitdOAiQ6Vx8RDS099m2YZfic5KrJgNW8IF1_SFCXR9_duK8UwQEq668rMJEI_j8vGHSjWKY-RIRRZKBeeCPKnNcnGQsT54p-S6zzSQ",
+        "Authorization": accessToken,
         "Content-Type": "application/json"
       },
       data: JSON.stringify(smartEvent)
@@ -385,6 +407,7 @@ define(['jquery', 'appConfig'], function ($, appConfig) {
     getSmartBadgeTimeZones: getSmartBadgeTimeZones,
     changePasswordSmartBadge: changePasswordSmartBadge,
     smartBadgeAddEvent: smartBadgeAddEvent,
+    getServerCurrentDate: getServerCurrentDate,
     registerForNotifications: registerForNotifications,
     getCustomers: getCustomers,
     createCustomer: createCustomer,

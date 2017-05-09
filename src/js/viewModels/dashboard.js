@@ -21,6 +21,9 @@
     function DashboardViewModel() {
       var self = this;
       var addressoUser;
+      var smartBadgeTimestamp;
+
+      var isFakeGeolocation;
       // Header Config
       self.headerConfig = {'viewName': 'header', 'viewModelFactory': app.getHeaderModel()};
 
@@ -32,7 +35,13 @@
       self.numeroCausale = ko.observable();
 
       var data = require("dataService");
-//***********
+
+
+
+      /**
+      * Function getSmartBadgeTimeZones
+      *   description: Call the API from dataservice in order to retrieval the TimeZones
+      **/
       data.getSmartBadgeTimeZones()
         .then(function (response) {
           if(typeof(response.errorMessage) != "undefined"){
@@ -87,7 +96,10 @@
           console.error("ERROR_: "+response.errorMessage);
           console.error('Registering Notifications Fail: ', response);
         })
-//***********
+        /**
+        //End Function getSmartBadgeTimeZones
+        **/
+
       var browserSupportFlag;
       if(navigator.geolocation){
         browserSupportFlag = true;
@@ -139,6 +151,8 @@
               if (errorFlag == true) {
                 $( "#textInfo" ).text("ERROR: Geolocation service failed!");
                 $("#infoDialogDashboard" ).ojDialog("open");
+                //TODO: remove me
+                isFakeGeolocation = true;
                 oj.Logger.warn("Geolocation service failed.");
               } else {
                 oj.Logger.warn("Browser doesn't support geolocation");
@@ -149,54 +163,125 @@
       self.startSmartBadge = function(){
 
 
-        navigator.geolocation.getCurrentPosition(function(position){
-alert(addressoUser);
-          var type        = $("#button-startEvent-ID").val();
-          var userName    = window.localStorage.getItem("userName");
-          var lat         = position.coords.latitude;
-          var lng         = position.coords.longitude;
-          var timestamp   = + new Date();
-          var date        = new Date();
-          var hour        = date.getHours();
-          var minutes     = date.getMinutes();
-          var seconds     = date.getSeconds();
-          var day         = date.getDate();
-          var month       = date.getMonth()+1;
-          var year        = date.getFullYear();
-          var note        = "empty";
-          var address     = addressoUser;
 
-          alert("The Time is.. "+ typeof timestamp);
-          console.log("Timbrature IN for " + userName + " at Time: "+ timestamp + " - Position( " + lat + " , " + lng + " ) - Location: "+address);
-          //alert("Timbrature IN for "+userName+ " at Time: "+ timestamp + " - Position( "+lat + " , " +lng + " ) - Location: "+address);
-          console.log("Latitude: "+lat);
-          console.log("Longitude: "+lng);
-          console.log("Timestamp: " + timestamp);
 
-          var smartEvent = {
-            "userName": "acasini",
-            "eTimestamp": timestamp,
-            "address": address,
-            "eDay": day,
-            "eHour": hour,
-            "eLat": lat,
-            "eLon": lng,
-            "eMinute": minutes,
-            "eMonth": month,
-            "eSeconds": seconds,
-            "eType": type,
-            "eYear": year,
-            "notes": note
-          }
+        if(isFakeGeolocation){
+          alert("isFakegeolocation -->  "+isFakeGeolocation);
+          /**
+          * Function; getServerCurrentDate
+          *     description: retrieval the server smartbadge
+          **/
+          data.getServerCurrentDate().then(function (response) {
+            smartBadgeTimestamp = response.timestamp;
+            console.log("Retrieval the SmartBadge Server time: "+response.timestamp);
+            alert("Retrieval the SmartBadge Server time: "+response.timestamp);
+            var type        = $("#button-startEvent-ID").val();
+            var userName    = window.localStorage.getItem("userName");
+            var lat         = 43.776775199999996;
+            var lng         = 11.296519799999999;
+            var timestamp   = smartBadgeTimestamp;
+            var date        = new Date();
+            var hour        = response.hour;
+            var minutes     = response.minutes;
+            var seconds     = response.seconds;
+            var day         = response.day;
+            var month       = response.month;
+            var year        = response.year;
+            var note        = "empty";
+            var address     = "Via di Test, Firezne, Italy";
 
-          app.smartBadgeAddEvent(smartEvent);
+            console.log("Timbrature IN for " + userName + " at Time: "+ timestamp + " - Position( " + lat + " , " + lng + " ) - Location: "+address);
+            //alert("Timbrature IN for "+userName+ " at Time: "+ timestamp + " - Position( "+lat + " , " +lng + " ) - Location: "+address);
+            console.log("Latitude: "+lat);
+            console.log("Longitude: "+lng);
+            console.log("Timestamp: " + timestamp);
 
-          //alert("Start for "+userName + " at "+timestamp);
-          //TODO: implemetare Haversine per controllare che la zona di timbratora sia valida
+            var smartEvent = {
+              "userName": "acasini",
+              "eTimestamp": timestamp,
+              "address": address,
+              "eDay": day,
+              "eHour": hour,
+              "eLat": lat,
+              "eLon": lng,
+              "eMinute": minutes,
+              "eMonth": month,
+              "eSeconds": seconds,
+              "eType": type,
+              "eYear": year,
+              "notes": note
+            }
 
-        }, function(){
-          self._handleNoGeolocation(browserSupportFlag);
-        });
+            app.smartBadgeAddEvent(smartEvent);
+
+          }).fail(function (response) {
+            console.error("ERROR: unable to get current time from SmartBadge Server AWS");
+          });
+
+        }else{
+          navigator.geolocation.getCurrentPosition(function(position){
+
+            /**
+            * Function; getServerCurrentDate
+            *     description: retrieval the server smartbadge
+            **/
+            data.getServerCurrentDate().then(function (response) {
+              smartBadgeTimestamp = response.timestamp;
+              console.log("Retrieval the SmartBadge Server time: "+response.timestamp);
+              alert("Retrieval the SmartBadge Server time: "+response.timestamp);
+
+              var type        = $("#button-startEvent-ID").val();
+              var userName    = window.localStorage.getItem("userName");
+              var lat         = position.coords.latitude;
+              var lng         = position.coords.longitude;
+              var timestamp   = response.timestamp;
+              var hour        = response.hour;
+              var minutes     = response.minutes;
+              var seconds     = response.seconds;
+              var day         = response.day;
+              var month       = response.month;
+              var year        = response.year;
+              var note        = "empty";
+              var address     = addressoUser;
+
+              alert("The Time is.. "+ typeof timestamp);
+              console.log("Timbrature IN for " + userName + " at Time: "+ timestamp + " - Position( " + lat + " , " + lng + " ) - Location: "+address);
+              //alert("Timbrature IN for "+userName+ " at Time: "+ timestamp + " - Position( "+lat + " , " +lng + " ) - Location: "+address);
+              console.log("Latitude: "+lat);
+              console.log("Longitude: "+lng);
+              console.log("Timestamp: " + timestamp);
+
+              var smartEvent = {
+                "userName": "acasini",
+                "eTimestamp": timestamp,
+                "address": address,
+                "eDay": day,
+                "eHour": hour,
+                "eLat": lat,
+                "eLon": lng,
+                "eMinute": minutes,
+                "eMonth": month,
+                "eSeconds": seconds,
+                "eType": type,
+                "eYear": year,
+                "notes": note
+              }
+
+              app.smartBadgeAddEvent(smartEvent);
+              //TODO: implemetare Haversine per controllare che la zona di timbratora sia valida
+
+            }).fail(function (response) {
+              console.error("ERROR: unable to get current time from SmartBadge Server AWS");
+            });
+
+          }, function(){
+            self._handleNoGeolocation(browserSupportFlag);
+          });
+        }
+
+
+
+
 
       }
 

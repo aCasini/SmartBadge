@@ -216,8 +216,8 @@ define(['ojs/ojcore',
       self.router = oj.Router.rootInstance;
 
       self.router.configure({
-       'signin': {label: 'Sign In'},
-       'dashboard': {label: 'Dashboard', isDefault: true},
+       'signin': {label: 'Sign In', isDefault: true},
+       'dashboard': {label: 'Dashboard'},
        'incidents': {label: 'Incidents'},
        'customers': {label: 'Customers'},
        'profile': {label: 'Profile'},
