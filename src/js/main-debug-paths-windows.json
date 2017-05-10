@@ -15,8 +15,6 @@
   "signals": "libs/js-signals/signals",
   "customElements": "libs/webcomponents/CustomElements",
   "proj4": "libs/proj4js/dist/proj4",
-  "oraclemapviewer": "libs/oraclemapsv2",
-  "oracleelocation": "libs/oracleelocationv3",
   "utils": "Utils",
   "css": "libs/require-css/css.min"
 }

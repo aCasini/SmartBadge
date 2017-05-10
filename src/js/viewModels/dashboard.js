@@ -183,7 +183,7 @@
         //$("#textarea-smartBadgeEvents-ID").append(logEvent);
 
         if(isFakeGeolocation){
-          alert("isFakegeolocation -->  "+isFakeGeolocation);
+          //alert("isFakegeolocation -->  "+isFakeGeolocation);
           /**
           * Function; getServerCurrentDate
           *     description: retrieval the server smartbadge
@@ -191,7 +191,7 @@
           data.getServerCurrentDate().then(function (response) {
             smartBadgeTimestamp = response.timestamp;
             console.log("Retrieval the SmartBadge Server time: "+response.timestamp);
-            alert("Retrieval the SmartBadge Server time: "+response.timestamp);
+            //alert("Retrieval the SmartBadge Server time: "+response.timestamp);
             var type        = $("#button-startEvent-ID").val();
             var userName    = window.localStorage.getItem("userName");
             var lat         = 43.776775199999996;

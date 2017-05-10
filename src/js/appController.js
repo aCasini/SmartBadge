@@ -51,7 +51,7 @@ define(['ojs/ojcore',
 
           oj.Router.rootInstance.go('dashboard');
         }).fail(function (response) {
-          alert(JSON.stringify(response));
+          //alert(JSON.stringify(response));
           console.error('Registering Notifications Fail: ', response);
           window.plugins.spinnerDialog.hide();
         })
@@ -67,7 +67,7 @@ define(['ojs/ojcore',
 
         data.signUpSmartBadge(registration).then(function (response) {
           if(typeof(response.errorMessage) != "undefined"){
-            alert("ERROR: "+response.errorMessage);
+            //alert("ERROR: "+response.errorMessage);
             console.log("ERROR: "+response.errorMessage);
           }else{
             var user = response.userName.username;
@@ -88,7 +88,7 @@ define(['ojs/ojcore',
           // Show spinner dialog
           window.plugins.spinnerDialog.hide();
         }).fail(function (response) {
-          alert("ERROR: "+response.errorMessage);
+          //alert("ERROR: "+response.errorMessage);
           //alert(JSON.stringify(response.errorMessage));
           console.error('Registering Notifications Fail: ', response);
           window.plugins.spinnerDialog.hide();
@@ -104,7 +104,7 @@ define(['ojs/ojcore',
 
         data.confUserSmartBadge(confirmUser).then(function (response) {
           if(typeof(response.errorMessage) != "undefined"){
-            alert("ERROR: "+response.errorMessage);
+            //alert("ERROR: "+response.errorMessage);
             console.log("ERROR: "+response.errorMessage);
           }else{
             $( "#textInfo" ).text("User " + confirmUser.userName + " has been CONFIRMED");
@@ -116,7 +116,7 @@ define(['ojs/ojcore',
           // Show spinner dialog
           window.plugins.spinnerDialog.hide();
         }).fail(function (response) {
-          alert("ERROR: "+response.errorMessage);
+          //alert("ERROR: "+response.errorMessage);
           //alert(JSON.stringify(response.errorMessage));
           console.error('Registering Notifications Fail: ', response);
           window.plugins.spinnerDialog.hide();
@@ -132,7 +132,7 @@ define(['ojs/ojcore',
 
         data.changePasswordSmartBadge(changePassword).then(function (response) {
           if(typeof(response.errorMessage) != "undefined"){
-            alert("ERROR: "+response.errorMessage);
+            //alert("ERROR: "+response.errorMessage);
             console.log("ERROR: "+response.errorMessage);
           }else{
             $( "#textInfo" ).text("Great! Password Changed");
@@ -143,7 +143,7 @@ define(['ojs/ojcore',
           // Show spinner dialog
           window.plugins.spinnerDialog.hide();
         }).fail(function (response) {
-          alert("ERROR: "+response.errorMessage);
+          //alert("ERROR: "+response.errorMessage);
           //alert(JSON.stringify(response.errorMessage));
           console.error('Registering Notifications Fail: ', response);
           window.plugins.spinnerDialog.hide();
@@ -195,10 +195,10 @@ define(['ojs/ojcore',
         data.getSmartBadgeTimeZones()
           .then(function (response) {
             if(typeof(response.errorMessage) != "undefined"){
-              alert("ERROR: "+response.errorMessage);
+              //alert("ERROR: "+response.errorMessage);
               console.log("ERROR: "+response.errorMessage);
             }else{
-              alert("Response: "+response);
+              //alert("Response: "+response);
               //test(response);
               console.log('Registering Notifications Success: ', response);
               responceAPI = response;
@@ -207,7 +207,7 @@ define(['ojs/ojcore',
             //window.plugins.spinnerDialog.hide();
           }).fail(function (response) {
             responceAPI = response;
-            alert("ERROR: "+response.errorMessage);
+            //alert("ERROR: "+response.errorMessage);
             //alert(JSON.stringify(response.errorMessage));
             console.error('Registering Notifications Fail: ', response);
             //window.plugins.spinnerDialog.hide();
@@ -227,12 +227,12 @@ define(['ojs/ojcore',
       self.router = oj.Router.rootInstance;
 
       self.router.configure({
-       'signin': {label: 'Sign In', isDefault: true},
+       'signin': {label: 'Sign In'},
        'dashboard': {label: 'Dashboard'},
        //'incidents': {label: 'Incidents'},
        'customers': {label: 'Customers'},
        //'profile': {label: 'Profile'},
-       'about': {label: 'About'}
+       'about': {label: 'About', isDefault: true}
       });
 
       oj.Router.defaults['urlAdapter'] = new oj.Router.urlParamAdapter();

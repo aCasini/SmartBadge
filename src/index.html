@@ -28,19 +28,10 @@
   <head>
     <title>Smart Badge</title>
     <meta charset="UTF-8">
-
 <!--
-z    <meta http-equiv="Content-Security-Policy"
-          content="default-src *; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src * data: 'unsafe-eval' https://maps.googleapi.com">
-        -->
-
-
-
-<!--
-    <meta http-equiv="Content-Security-Policy"
-          content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval' http://www.google.com">
+    <meta http-equiv="Content-Security-Policy" content="default-src *; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src * data:">
 -->
-
+    <meta http-equiv="Content-Security-Policy" content="default-src gap://ready file://* *; script-src 'self' 'unsafe-inline' 'unsafe-eval' *; style-src 'self' 'unsafe-inline' *; img-src 'self' data: blob: *; media-src 'self' mediastream: blob:; connect-src * blob:">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
     <link rel="icon" href="css/images/favicon.ico" type="image/x-icon" />
 
@@ -53,7 +44,7 @@ z    <meta http-equiv="Content-Security-Policy"
 
     <!-- This is where you would add any app specific styling -->
     <link rel="stylesheet" href="css/override.css" type="text/css"/>
-  
+
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCj1MFqRLfXutvNfY07B5kzWhC8kJZyqLI"/>
 
 
@@ -90,12 +81,6 @@ z    <meta http-equiv="Content-Security-Policy"
 
     <script type="text/javascript" src="js/libs/require/require.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
-
-    <!-- Google Maps API script -->
-<!--
-    <script defer async type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
--->
-
 
   </body>
 

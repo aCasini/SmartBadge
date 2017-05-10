@@ -215,8 +215,8 @@ define(['ojs/ojcore', 'knockout',
     // Replace with sign in authentication
     self.signIn = function() {
       //Get UserName and Password
-      let userName = $('#MobilePTUsername').val();
-      let passWord = $('#MobilePTPassword').val();
+      var userName = $('#MobilePTUsername').val();
+      var passWord = $('#MobilePTPassword').val();
       window.localStorage.setItem("userName", userName);
       window.localStorage.setItem("passWord", passWord);
       //sessionStorage.userName = userName;
