@@ -15,8 +15,9 @@
          'ojs/ojbutton',
          'ojs/ojanimation',
          'ojs/ojdialog',
+         'utils',
          'dataService'
-       ], function(oj, ko, $, app, data) {
+       ], function(oj, ko, $, app, utils, data) {
 
     function DashboardViewModel() {
       var self = this;
@@ -38,18 +39,15 @@
 
       //Retrieval the currently SmartBadge Events for user Logged In
       var currentDate = new Date();
-      var day = currentDate.getDay();
-      var month = currentDate.getMonth();
+
+      var day = currentDate.getDate();
+      var month = currentDate.getMonth()+1;
       var year = currentDate.getFullYear();
       var user = window.localStorage.getItem("userName");
-/*
-      data.getLastSmartBadgeEvents(user, day, month, year)
-        .then(function (response) {
-          alert("SUCCES getLastSmartBadgeEvents");
-      }).fail(function (error) {
-          alert("FAIL getLastSmartBadgeEvents");
-      })
-*/
+
+      utils = new Utils();
+      utils.updateEventConsole(data);
+
       /**
       * Function getSmartBadgeTimeZones
       *   description: Call the API from dataservice in order to retrieval the TimeZones

@@ -15,9 +15,10 @@ define(['ojs/ojcore',
         'jquery',
         'dataService',
         //'PushClient',
+        'utils',
         'ConnectionDrawer'
       ],
-  function(oj, ko, ConnectionDrawer) {
+  function(oj, ko, utils, ConnectionDrawer) {
 
      function ControllerViewModel() {
       var self = this;
@@ -153,6 +154,8 @@ define(['ojs/ojcore',
       * Function : call the AWs APIs for Cognito SignUp user
       */
       self.smartBadgeAddEvent = function (smartEvent) {
+        utils = new Utils();
+
         window.plugins.spinnerDialog.show();
 
         console.log("Call the AWS add Smart Event API");
@@ -163,6 +166,10 @@ define(['ojs/ojcore',
             $("#infoDialogDashboard" ).ojDialog("open");
             console.log("ERROR: "+response.errorMessage);
           }else{
+            utils.appendEvent2Console(smartEvent.eHour,
+                    smartEvent.eMinute,
+                    smartEvent.eType);
+
             window.plugins.spinnerDialog.hide();
             $( "#textInfo" ).text("TimeCard Event created with SUCCESS");
             $("#infoDialogDashboard" ).ojDialog("open");
@@ -220,8 +227,8 @@ define(['ojs/ojcore',
       self.router = oj.Router.rootInstance;
 
       self.router.configure({
-       'signin': {label: 'Sign In'},
-       'dashboard': {label: 'Dashboard', isDefault: true},
+       'signin': {label: 'Sign In', isDefault: true},
+       'dashboard': {label: 'Dashboard'},
        'incidents': {label: 'Incidents'},
        'customers': {label: 'Customers'},
        'profile': {label: 'Profile'},

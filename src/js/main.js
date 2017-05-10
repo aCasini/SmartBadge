@@ -33,6 +33,7 @@ requirejs.config(
     'css': 'libs/require-css/css',
     "oraclemapviewer": "libs/oraclemapsv2",
     "oracleelocation": "libs/oracleelocationv3",
+    "utils": "Utils",
     //"googlemap": "libs/googlemap",
     'appConfig': 'appConfigExternal'
   }

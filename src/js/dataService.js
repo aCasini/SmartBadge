@@ -98,6 +98,7 @@ define(['jquery', 'appConfig'], function ($, appConfig) {
   * Function: getSmartBadgeTimeZones
   *   description: get all timeZones from AWS
   */
+  //$util.parseJson($input.json('$')) --> added to API gateway
   function getSmartBadgeTimeZones(){
     console.log("Call the webService: "+awsBaseUrl + timeZonesPath);
 
@@ -131,17 +132,18 @@ define(['jquery', 'appConfig'], function ($, appConfig) {
   * Function getLastSmartBadgeEvents
   *   description: get the currently SmartBadge events for user loggedIn
   */
+  //$util.parseJson($input.json('$')) --> added to API gateway
   function getLastSmartBadgeEvents(user, day, month, year){
-    var fullUrl = awsBaseUrl + timeEventsPaths+"?user="+user+"&day="+day+"&month="+month+"year="+year
+    var fullUrl = awsBaseUrl + timeEventsPaths+"?user="+user+"&day="+day+"&month="+month+"&year="+year
     console.log("Call the webService: "+fullUrl);
-    alert(fullUrl);
+
     return $.ajax({
       url: fullUrl,
       type: 'GET',
       dataType: "json",
-      crossDomain: true
+      crossDomain: true,
       //jsonp: true,
-      //jsonpCallback: "callback"
+      //jsonpCallback: "callbackEvents"
     });
   }
 
