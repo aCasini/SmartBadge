@@ -229,9 +229,9 @@ define(['ojs/ojcore',
       self.router.configure({
        'signin': {label: 'Sign In', isDefault: true},
        'dashboard': {label: 'Dashboard'},
-       'incidents': {label: 'Incidents'},
+       //'incidents': {label: 'Incidents'},
        'customers': {label: 'Customers'},
-       'profile': {label: 'Profile'},
+       //'profile': {label: 'Profile'},
        'about': {label: 'About'}
       });
 
@@ -255,12 +255,12 @@ define(['ojs/ojcore',
       var navData = [
       {name: 'Dashboard', id: 'dashboard',
        iconClass: 'oj-navigationlist-item-icon demo-icon-font-24 demo-chart-icon-24'},
-      {name: 'Incidents', id: 'incidents',
-       iconClass: 'oj-navigationlist-item-icon demo-icon-font-24 demo-fire-icon-24'},
+      //{name: 'Incidents', id: 'incidents',
+       //iconClass: 'oj-navigationlist-item-icon demo-icon-font-24 demo-fire-icon-24'},
       {name: 'Customers', id: 'customers',
        iconClass: 'oj-navigationlist-item-icon demo-icon-font-24 demo-people-icon-24'},
-      {name: 'Profile', id: 'profile',
-       iconClass: 'oj-navigationlist-item-icon demo-icon-font-24 demo-person-icon-24'},
+      //{name: 'Profile', id: 'profile',
+       //iconClass: 'oj-navigationlist-item-icon demo-icon-font-24 demo-person-icon-24'},
       {name: 'About', id: 'about',
        iconClass: 'oj-navigationlist-item-icon demo-icon-font-24 demo-info-icon-24'}
       ];

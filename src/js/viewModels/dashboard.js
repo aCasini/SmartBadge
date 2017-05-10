@@ -45,8 +45,13 @@
       var year = currentDate.getFullYear();
       var user = window.localStorage.getItem("userName");
 
-      utils = new Utils();
-      utils.updateEventConsole(data);
+      self.handleActivated = function(info) {
+        // Implement if needed
+        utils = new Utils();
+        utils.updateEventConsole(data);
+      };
+
+
 
       /**
       * Function getSmartBadgeTimeZones

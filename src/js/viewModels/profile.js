@@ -7,7 +7,7 @@
  */
 define(['ojs/ojcore', 'knockout', 'jquery', 'appController'],
  function(oj, ko, $, app) {
-  
+
     function ProfileViewModel() {
       var self = this;
 
@@ -30,6 +30,7 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'appController'],
        */
       self.handleActivated = function(info) {
         // Implement if needed
+        alert("Activated");
       };
 
       /**
@@ -43,11 +44,12 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'appController'],
        */
       self.handleAttached = function(info) {
         // Implement if needed
+        alert("Attached");
       };
 
 
       /**
-       * Optional ViewModel method invoked after the bindings are applied on this View. 
+       * Optional ViewModel method invoked after the bindings are applied on this View.
        * If the current View is retrieved from cache, the bindings will not be re-applied
        * and this callback will not be invoked.
        * @param {Object} info - An object with the following key-value pairs:
@@ -56,6 +58,7 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'appController'],
        */
       self.handleBindingsApplied = function(info) {
         // Implement if needed
+        alert("Applied");
       };
 
       /*
@@ -68,6 +71,7 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'appController'],
        */
       self.handleDetached = function(info) {
         // Implement if needed
+        alert("Detached");
       };
     }
 
